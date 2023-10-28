@@ -42,7 +42,7 @@
                         </Grid.ColumnDefinitions>
                         
                         <TextBlock FontSize="36" 
-                                   Text="{Binding ID}" 
+                                   Text="{Binding Id}" 
                                    TextWrapping="Wrap"  
                                    HorizontalAlignment="Left" 
                                    Grid.Column="0" />
