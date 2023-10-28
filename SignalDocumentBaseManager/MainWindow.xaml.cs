@@ -38,14 +38,70 @@ namespace SignalDocumentBaseManager
 
             var input = seachBox.Text.ToLower();
 
-            var searchResult = documents.Where(document =>
-            document.Id.ToString().ToLower().Contains(input) ||
-            document.Type.ToLower().Contains(input) ||
-            document.Name.ToLower().Contains(input) ||
-            document.Number.ToLower().Contains(input) ||
-            document.ReleaseDate.ToLower().Contains(input) ||
-            document.EntryDate.ToLower().Contains(input) ||
-            document.KeyWords.ToLower().Contains(input));
+            List<Document> searchResult = new List<Document>();
+
+            switch (choice)
+            {
+                case "Type":
+                    foreach (var el in documents)
+                    {
+                        if (el.Type.ToLower().Contains(input))
+                        {
+                            searchResult.Add(el);
+                        }
+                    }
+                    break;
+
+                case "Name":
+                    foreach (var el in documents)
+                    {
+                        if (el.Name.ToLower().Contains(input))
+                        {
+                            searchResult.Add(el);
+                        }
+                    }
+                    break;
+
+                case "Number":
+                    foreach (var el in documents)
+                    {
+                        if (el.Number.ToLower().Contains(input))
+                        {
+                            searchResult.Add(el);
+                        }
+                    }
+                    break;
+
+                case "ReleaseDate":
+                    foreach (var el in documents)
+                    {
+                        if (el.ReleaseDate.ToLower().Contains(input))
+                        {
+                            searchResult.Add(el);
+                        }
+                    }
+                    break;
+
+                case "EntryDate":
+                    foreach (var el in documents)
+                    {
+                        if (el.EntryDate.ToLower().Contains(input))
+                        {
+                            searchResult.Add(el);
+                        }
+                    }
+                    break;
+
+                case "KeyWords":
+                    foreach (var el in documents)
+                    {
+                        if (el.KeyWords.ToLower().Contains(input))
+                        {
+                            searchResult.Add(el);
+                        }
+                    }
+                    break;
+            }
 
             DocumentsListBox.ItemsSource = searchResult;
             DocumentsListBox.Items.Refresh();
