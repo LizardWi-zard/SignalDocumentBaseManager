@@ -135,12 +135,19 @@
                      HorizontalAlignment="Stretch"
                      VerticalAlignment="Center"/>
 
-            <ComboBox Grid.Column="2"
+                        <ComboBox  Name="Filter_ComboBox" Grid.Column="2"
                      Width="55"
                      Height="22"
-                     Background="Red"
+                     
                      HorizontalAlignment="Left"
                      VerticalAlignment="Center" />
+
+                <ComboBoxItem> option1</ComboBoxItem>
+                <ComboBoxItem> option2</ComboBoxItem>
+                <ComboBoxItem> option3</ComboBoxItem>
+                <ComboBoxItem> option4</ComboBoxItem>
+
+            </ComboBox>
 
             <Button Grid.Column="3"
                     Style="{DynamicResource RoundedButton}"
@@ -272,107 +279,5 @@
             </ListBox>
 
         </Grid>
-
-        <!--
-        
-        <ListBox x:Name="PhotoListBox"
-          ItemsSource="{Binding Mode=OneWay}" 
-          Background="#F7F0FA"
-          HorizontalContentAlignment="Left"
-          VerticalContentAlignment="Top"
-          Margin="10,37,10,10" 
-          SelectionMode="Multiple"
-          
-          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-          d:ItemsSource="{d:SampleData ItemCount=20}"
-          BorderThickness="0">
-
-
-
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="Margin" Value="5"/>
-
-                </Style>
-            </ListBox.ItemContainerStyle>
-
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid Height="50"
-                          Width="749">
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="15"/>
-                            <ColumnDefinition Width="auto"
-                                              MaxWidth="300"/>
-                            <ColumnDefinition Width="100"
-                                              MaxWidth="200"/>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="150"/>
-                        </Grid.ColumnDefinitions>
-
-
-                        <TextBlock Text="{Binding Id}"
-                                   TextWrapping="Wrap"
-                                   Grid.Column="0"
-                                   FontSize="15"
-                                   Background="#FF8E75FB"
-                                   Foreground="#F7F0FA" 
-                                   MinWidth="10"
-                                   TextAlignment="Center" Margin="0,16,0,16"/>
-
-                        <TextBlock Text="{Binding Type}"
-                                   TextWrapping="Wrap"
-                                   Grid.Column="1"
-                                   FontSize="15"
-                                   Background="#FF8E75FB"
-                                   Foreground="#F7F0FA" 
-                                   MinWidth="10"
-                                   TextAlignment="Center" Margin="0,16,0,16"/>
-
-                        <TextBlock Text="{Binding Name}"
-                                   TextWrapping="WrapWithOverflow"
-                                   Grid.Column="2"
-                                   FontSize="15"
-                                   Background="#FF8E75FB"
-                                   Foreground="#F7F0FA" 
-                                   MinWidth="10"
-                                   TextAlignment="Center" Margin="0,16,0,16"/>
-
-                        <TextBlock Text="{Binding Number}"
-                                   TextWrapping="Wrap"
-                                   Grid.Column="3"
-                                   FontSize="15"
-                                   Background="#FF8E75FB"
-                                   Foreground="#F7F0FA" 
-                                   MinWidth="10"
-                                   TextAlignment="Center" Margin="0,16,0,16"/>
-
-                        <TextBlock Text="{Binding ReleaseDate}"
-                                   TextWrapping="Wrap"
-                                   Grid.Column="4"
-                                   FontSize="15"
-                                   Background="#FF8E75FB"
-                                   Foreground="#F7F0FA" 
-                                   MinWidth="10"
-                                   TextAlignment="Center" Margin="0,16,0,16"/>
-
-                        <TextBlock Text="{Binding EntryDate}"
-                                   TextWrapping="Wrap"
-                                   Grid.Column="5"
-                                   FontSize="15"
-                                   Background="#FF8E75FB"
-                                   Foreground="#F7F0FA" 
-                                   MinWidth="10"
-                                   TextAlignment="Center" Margin="0,16,0,16"/>
-
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-
-        </ListBox>
--->
     </Grid>
 </Window>
