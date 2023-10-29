@@ -25,7 +25,7 @@ namespace SignalDocumentBaseManager
     /// </summary>
     public partial class MainWindow : Window
     {
-        string searchFilter = "None"; //TODO: использовать в реализации алгоритма поиска с фильтром
+        string searchFilter = "None";
         List<Document> documents = new List<Document>();
 
         public MainWindow()
@@ -41,11 +41,7 @@ namespace SignalDocumentBaseManager
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
 
-           // string data = "[{\"ID\":1,\"Type\":\"ГОСТ (гос. стандарт)\",\"Name\":\"Информационные технологии. Комплекс стандартов на автоматизированные системы управления\",\"Number\":\"34.602-2020\",\"ReleaseDate\":\"2020-12-22\",\"EntryDate\":\"2022-01-01\",\"KeyWords\":\"технологии\"}, {\"ID\":2,\"Type\":\"РД (рук документ)\",\"Name\":\"Котлы паровые и водогрейные, трубопроводы пара и горячей воды.\",\"Number\":\"2730.940.103-92\",\"ReleaseDate\":\"1992-12-25\",\"EntryDate\":\"1993-01-01\",\"KeyWords\":\"Котлы\"}, {\"ID\":3,\"Type\":\"Указ (президента)\",\"Name\":\"О призыве в октябре — декабре 2023 г. граждан Российской Федерации на военную службу\",\"Number\":\"375\",\"ReleaseDate\":\"2023-09-29\",\"EntryDate\":\"2023-10-01\",\"KeyWords\":\"Указ\"}, {\"ID\":4,\"Type\":\"Постановление правительства\",\"Name\":\"О внесении изменений в Правила холодного водоснабжения и водоотведения\",\"Number\":\"1670\",\"ReleaseDate\":\"2023-10-10\",\"EntryDate\":\"2023-11-01\",\"KeyWords\":\"водоотведения водоснабжения\"}, {\"ID\":5,\"Type\":\"СТО (стандарт организации)\",\"Name\":\"Проведения аттестации испытательной лаборатории\",\"Number\":\"7.5.18-2020\",\"ReleaseDate\":\"2023-05-23\",\"EntryDate\":\"2023-07-01\",\"KeyWords\":\"аттестации лаборатории\"}, {\"ID\":6,\"Type\":\"МИ (металогическая инструкция)\",\"Name\":\"Ведение электронной документации\",\"Number\":\"8.12-2018\",\"ReleaseDate\":\"2018-08-16\",\"EntryDate\":\"2019-01-01\",\"KeyWords\":\"металогическая инструкция\"}]";
-
             documents = GetDocumentsAsync().Result.ToList();
-
-            var input = searchBox.Text.ToLower();
 
             var input = searchBox.Text.ToLower();
 
@@ -143,11 +139,7 @@ namespace SignalDocumentBaseManager
         {
             searchFilter = Filter_ComboBox.SelectedValue.ToString();
 
-            string data = "[{\"ID\":1,\"Type\":\"ГОСТ (гос. стандарт)\",\"Name\":\"Информационные технологии. Комплекс стандартов на автоматизированные системы управления\",\"Number\":\"34.602-2020\",\"ReleaseDate\":\"2020-12-22\",\"EntryDate\":\"2022-01-01\",\"KeyWords\":\"технологии\"}, {\"ID\":2,\"Type\":\"РД (рук документ)\",\"Name\":\"Котлы паровые и водогрейные, трубопроводы пара и горячей воды.\",\"Number\":\"2730.940.103-92\",\"ReleaseDate\":\"1992-12-25\",\"EntryDate\":\"1993-01-01\",\"KeyWords\":\"Котлы\"}, {\"ID\":3,\"Type\":\"Указ (президента)\",\"Name\":\"О призыве в октябре — декабре 2023 г. граждан Российской Федерации на военную службу\",\"Number\":\"375\",\"ReleaseDate\":\"2023-09-29\",\"EntryDate\":\"2023-10-01\",\"KeyWords\":\"Указ\"}, {\"ID\":4,\"Type\":\"Постановление правительства\",\"Name\":\"О внесении изменений в Правила холодного водоснабжения и водоотведения\",\"Number\":\"1670\",\"ReleaseDate\":\"2023-10-10\",\"EntryDate\":\"2023-11-01\",\"KeyWords\":\"водоотведения водоснабжения\"}, {\"ID\":5,\"Type\":\"СТО (стандарт организации)\",\"Name\":\"Проведения аттестации испытательной лаборатории\",\"Number\":\"7.5.18-2020\",\"ReleaseDate\":\"2023-05-23\",\"EntryDate\":\"2023-07-01\",\"KeyWords\":\"аттестации лаборатории\"}, {\"ID\":6,\"Type\":\"МИ (металогическая инструкция)\",\"Name\":\"Ведение электронной документации\",\"Number\":\"8.12-2018\",\"ReleaseDate\":\"2018-08-16\",\"EntryDate\":\"2019-01-01\",\"KeyWords\":\"металогическая инструкция\"}]";
-
-            List<Document> documents = new List<Document>();
-
-            documents = JsonConvert.DeserializeObject<Document[]>(data).ToList();
+            documents = GetDocumentsAsync().Result.ToList();
 
             var input = searchBox.Text.ToLower();
 
@@ -173,11 +165,9 @@ namespace SignalDocumentBaseManager
 
         private void ApplyData_Click(object sender, RoutedEventArgs e)
         {
-
             DocumentDataInput.Visibility = Visibility.Collapsed;
 
             Document newDocument = new Document();
-
 
             newDocument.Id = documents.Count() + 1;
             newDocument.Type = DocumentType_textbox.Text;
@@ -188,13 +178,10 @@ namespace SignalDocumentBaseManager
             newDocument.KeyWords = DocumentKeyWords_textbox.Text;
 
             PostDocumentsAsync(newDocument);
-
-
         }
 
         private void GoBack_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: switch case selection of element to off
             DocumentDataInput.Visibility = Visibility.Collapsed;
         }
 
