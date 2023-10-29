@@ -38,71 +38,80 @@ namespace SignalDocumentBaseManager
 
             documents = JsonConvert.DeserializeObject<Document[]>(data).ToList();
 
-            var input = seachBox.Text.ToLower();
+            var input = searchBox.Text.ToLower();
 
             List<Document> searchResult = new List<Document>();
 
-            switch (choice)
-            {
+            switch (searchFilter)
+            {            
                 case "Type":
-                    foreach (var el in documents)
+                    foreach (var document in documents)
                     {
-                        if (el.Type.ToLower().Contains(input))
+                        if (document.Type.ToLower().Contains(input))
                         {
-                            searchResult.Add(el);
+                            searchResult.Add(document);
                         }
                     }
                     break;
 
                 case "Name":
-                    foreach (var el in documents)
+                    foreach (var document in documents)
                     {
-                        if (el.Name.ToLower().Contains(input))
+                        if (document.Name.ToLower().Contains(input))
                         {
-                            searchResult.Add(el);
+                            searchResult.Add(document);
                         }
                     }
                     break;
 
                 case "Number":
-                    foreach (var el in documents)
+                    foreach (var document in documents)
                     {
-                        if (el.Number.ToLower().Contains(input))
+                        if (document.Number.ToLower().Contains(input))
                         {
-                            searchResult.Add(el);
+                            searchResult.Add(document);
                         }
                     }
                     break;
 
                 case "ReleaseDate":
-                    foreach (var el in documents)
+                    foreach (var document in documents)
                     {
-                        if (el.ReleaseDate.ToLower().Contains(input))
+                        if (document.ReleaseDate.ToLower().Contains(input))
                         {
-                            searchResult.Add(el);
+                            searchResult.Add(document);
                         }
                     }
                     break;
 
                 case "EntryDate":
-                    foreach (var el in documents)
+                    foreach (var document in documents)
                     {
-                        if (el.EntryDate.ToLower().Contains(input))
+                        if (document.EntryDate.ToLower().Contains(input))
                         {
-                            searchResult.Add(el);
+                            searchResult.Add(document);
                         }
                     }
                     break;
 
                 case "KeyWords":
-                    foreach (var el in documents)
+                    foreach (var document in documents)
                     {
-                        if (el.KeyWords.ToLower().Contains(input))
+                        if (document.KeyWords.ToLower().Contains(input))
                         {
-                            searchResult.Add(el);
+                            searchResult.Add(document);
                         }
                     }
                     break;
+                default:
+                    searchResult = documents.Where(document =>
+                    document.Id.ToString().ToLower().Contains(input) ||
+                    document.Type.ToLower().Contains(input) ||
+                    document.Name.ToLower().Contains(input) ||
+                    document.Number.ToLower().Contains(input) ||
+                    document.ReleaseDate.ToLower().Contains(input) ||
+                    document.EntryDate.ToLower().Contains(input) ||
+                    document.KeyWords.ToLower().Contains(input));
             }
 
             DocumentsListBox.ItemsSource = searchResult;

@@ -125,7 +125,7 @@
 
             <TextBox Grid.Column="1"
                      Style="{DynamicResource RoundedTextBox}"
-                     Name="seachBox" 
+                     Name="searchBox" 
                      Width="auto"
                      Margin="10, 0, 10, 0"
                      Height="22"
