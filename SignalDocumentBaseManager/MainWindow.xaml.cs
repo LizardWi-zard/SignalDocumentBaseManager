@@ -40,11 +40,16 @@ namespace SignalDocumentBaseManager
 
             var input = searchBox.Text.ToLower();
 
+            SearchAtDataBase(input, documents);
+        }
+             
+        private void SearchAtDataBase(string input, List<Document> documents)
+        {
             List<Document> searchResult = new List<Document>();
 
             switch (searchFilter)
-            {            
-                case "Type":
+            {
+                case "Тип":
                     foreach (var document in documents)
                     {
                         if (document.Type.ToLower().Contains(input))
@@ -54,7 +59,7 @@ namespace SignalDocumentBaseManager
                     }
                     break;
 
-                case "Name":
+                case "Название":
                     foreach (var document in documents)
                     {
                         if (document.Name.ToLower().Contains(input))
@@ -64,7 +69,7 @@ namespace SignalDocumentBaseManager
                     }
                     break;
 
-                case "Number":
+                case "Номер":
                     foreach (var document in documents)
                     {
                         if (document.Number.ToLower().Contains(input))
@@ -74,7 +79,7 @@ namespace SignalDocumentBaseManager
                     }
                     break;
 
-                case "ReleaseDate":
+                case "Дата выхода":
                     foreach (var document in documents)
                     {
                         if (document.ReleaseDate.ToLower().Contains(input))
@@ -84,7 +89,7 @@ namespace SignalDocumentBaseManager
                     }
                     break;
 
-                case "EntryDate":
+                case "Дата ввода в действие":
                     foreach (var document in documents)
                     {
                         if (document.EntryDate.ToLower().Contains(input))
@@ -94,7 +99,7 @@ namespace SignalDocumentBaseManager
                     }
                     break;
 
-                case "KeyWords":
+                case "Ключевые слова":
                     foreach (var document in documents)
                     {
                         if (document.KeyWords.ToLower().Contains(input))
@@ -113,7 +118,6 @@ namespace SignalDocumentBaseManager
                     document.EntryDate.ToLower().Contains(input) ||
                     document.KeyWords.ToLower().Contains(input));
             }
-
             DocumentsListBox.ItemsSource = searchResult;
             DocumentsListBox.Items.Refresh();
         }
@@ -121,6 +125,16 @@ namespace SignalDocumentBaseManager
         private void Filter_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             searchFilter = Filter_ComboBox.SelectedValue.ToString();
+
+            string data = "[{\"ID\":1,\"Type\":\"ГОСТ (гос. стандарт)\",\"Name\":\"Информационные технологии. Комплекс стандартов на автоматизированные системы управления\",\"Number\":\"34.602-2020\",\"ReleaseDate\":\"2020-12-22\",\"EntryDate\":\"2022-01-01\",\"KeyWords\":\"технологии\"}, {\"ID\":2,\"Type\":\"РД (рук документ)\",\"Name\":\"Котлы паровые и водогрейные, трубопроводы пара и горячей воды.\",\"Number\":\"2730.940.103-92\",\"ReleaseDate\":\"1992-12-25\",\"EntryDate\":\"1993-01-01\",\"KeyWords\":\"Котлы\"}, {\"ID\":3,\"Type\":\"Указ (президента)\",\"Name\":\"О призыве в октябре — декабре 2023 г. граждан Российской Федерации на военную службу\",\"Number\":\"375\",\"ReleaseDate\":\"2023-09-29\",\"EntryDate\":\"2023-10-01\",\"KeyWords\":\"Указ\"}, {\"ID\":4,\"Type\":\"Постановление правительства\",\"Name\":\"О внесении изменений в Правила холодного водоснабжения и водоотведения\",\"Number\":\"1670\",\"ReleaseDate\":\"2023-10-10\",\"EntryDate\":\"2023-11-01\",\"KeyWords\":\"водоотведения водоснабжения\"}, {\"ID\":5,\"Type\":\"СТО (стандарт организации)\",\"Name\":\"Проведения аттестации испытательной лаборатории\",\"Number\":\"7.5.18-2020\",\"ReleaseDate\":\"2023-05-23\",\"EntryDate\":\"2023-07-01\",\"KeyWords\":\"аттестации лаборатории\"}, {\"ID\":6,\"Type\":\"МИ (металогическая инструкция)\",\"Name\":\"Ведение электронной документации\",\"Number\":\"8.12-2018\",\"ReleaseDate\":\"2018-08-16\",\"EntryDate\":\"2019-01-01\",\"KeyWords\":\"металогическая инструкция\"}]";
+
+            List<Document> documents = new List<Document>();
+
+            documents = JsonConvert.DeserializeObject<Document[]>(data).ToList();
+
+            var input = searchBox.Text.ToLower();
+
+            SearchAtDataBase(input, documents);
         }
 
         public class Document
