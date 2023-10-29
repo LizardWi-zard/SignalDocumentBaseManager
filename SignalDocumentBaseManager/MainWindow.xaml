@@ -186,11 +186,14 @@ Height="22"
 HorizontalAlignment="Left"
 VerticalAlignment="Center" >
 
-                            <ComboBoxItem>option1</ComboBoxItem>
-                            <ComboBoxItem>option2</ComboBoxItem>
-                            <ComboBoxItem>option3</ComboBoxItem>
-                            <ComboBoxItem>option4</ComboBoxItem>
-                        </ComboBox>
+                <ComboBoxItem>Тип</ComboBoxItem>
+                <ComboBoxItem>Название</ComboBoxItem>
+                <ComboBoxItem>Номер</ComboBoxItem>
+                <ComboBoxItem>Дата выхода</ComboBoxItem>
+				<ComboBoxItem>Дата ввода в действие</ComboBoxItem>
+				<ComboBoxItem>Ключевые слова</ComboBoxItem>				
+
+            </ComboBox>
 
                         <Button Grid.Column="3"
                     Style="{DynamicResource RoundedButton}"
