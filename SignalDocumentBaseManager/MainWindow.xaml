@@ -6,164 +6,280 @@
         xmlns:local="clr-namespace:SignalDocumentBaseManager"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
+        <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+        <Style x:Key="RoundedButton" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="8" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
+        <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
+        <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
+        <Style x:Key="RoundedTextBox" TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TextBox.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" CornerRadius="8" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                        <Condition Property="IsSelectionActive" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
     <Grid>
-        <TextBox Name="seachBox" 
-                Width="558"
-                 Height="22"
-                 Background="Yellow"
-                 HorizontalAlignment="Left"
-                 VerticalAlignment="Top" Margin="77,10,0,0"/>
 
-        <Button Width="150"
-                 Height="22"
-                 Background="Aqua"
-                 HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Click="SearchButton_Click" Margin="0,10,10,0"/>
+        <Grid Height="70"
+              VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition/>
+                <ColumnDefinition  Width="60"/>
+                <ColumnDefinition Width="60" />
+            </Grid.ColumnDefinitions>
 
+            <Image Grid.Column="0"
+                   Source="/SignalLogo.png" 
+                   Stretch="Uniform"/>
 
+            <TextBox Grid.Column="1"
+                     Style="{DynamicResource RoundedTextBox}"
+                     Name="seachBox" 
+                     Width="auto"
+                     Margin="10, 0, 10, 0"
+                     Height="22"
+                     BorderThickness="2" 
+                     BorderBrush="#FFFFD301" 
+                     Padding="8,0,0,0"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Center"/>
 
-        <ListBox Name="DocumentsListBox"
-                 Margin="10, 40,10,10"
-                 ItemsSource="{Binding Mode=OneWay}" >
+            <ComboBox Grid.Column="2"
+                      SelectedValuePath="Content"
+                      Name="Filter_ComboBox"
+                      SelectionChanged="Filter_ComboBox_SelectionChanged"
+                      Width="55"
+                      Height="22"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Center" >
 
-            <ListBox.ItemTemplate>
-                
-            <DataTemplate>
-                <StackPanel Margin="10">
-                    <Grid Width="1920" Background="#FFFFD301">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
-                            <ColumnDefinition Width="300" />
-                            <ColumnDefinition Width="500" />
-                            <ColumnDefinition Width="300" />
-                            <ColumnDefinition Width="300" />
-                            <ColumnDefinition Width="300" />
-                        </Grid.ColumnDefinitions>
-                        
-                        <TextBlock FontSize="36" 
-                                   Text="{Binding Id}" 
-                                   TextWrapping="Wrap"  
-                                   HorizontalAlignment="Left" 
-                                   Grid.Column="0" />
-                        
-                        <TextBlock FontSize="36" 
-                                   Text="{Binding Type}" 
-                                   TextWrapping="Wrap"  
-                                   HorizontalAlignment="Left" 
-                                   Grid.Column="1"  />
-                        
-                        <TextBlock FontSize="36" Text="{Binding Name}" TextWrapping="Wrap" HorizontalAlignment="Left" Grid.Column="2"  />
-                        <TextBlock FontSize="36" Text="{Binding Number}" TextWrapping="Wrap"  HorizontalAlignment="Left" Grid.Column="3"  />
-                            <TextBlock FontSize="36" Text="{Binding ReleaseDate}" TextWrapping="Wrap"  HorizontalAlignment="Left" Grid.Column="4"  />
-                        <TextBlock FontSize="36" Text="{Binding EntryDate}" TextWrapping="Wrap"  HorizontalAlignment="Left" Grid.Column="5"  />
-                    </Grid>
-                </StackPanel>
-            </DataTemplate>
-            </ListBox.ItemTemplate>
+                <ComboBoxItem> option1</ComboBoxItem>
+                <ComboBoxItem> option2</ComboBoxItem>
+                <ComboBoxItem> option3</ComboBoxItem>
+                <ComboBoxItem> option4</ComboBoxItem>
 
-        </ListBox>
+            </ComboBox>
 
-        <!--
-        
-        <ListBox x:Name="PhotoListBox"
-          ItemsSource="{Binding Mode=OneWay}" 
-          Background="#F7F0FA"
-          HorizontalContentAlignment="Left"
-          VerticalContentAlignment="Top"
-          Margin="10,37,10,10" 
-          SelectionMode="Multiple"
-          
-          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-          d:ItemsSource="{d:SampleData ItemCount=20}"
-          BorderThickness="0">
+            <Button Grid.Column="3"
+                    Style="{DynamicResource RoundedButton}"
+                    Height="22"
+                    Width="50"
+                    Background="#FFFFD301"
+                    Content="Поиск"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Click="SearchButton_Click"/>
 
+        </Grid>
 
+        <Grid Margin="10,70,10,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="Margin" Value="5"/>
+            <Grid Grid.Row="0"
+                  Margin="10,0,10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="500" />
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="150" />
+                </Grid.ColumnDefinitions>
 
-                </Style>
-            </ListBox.ItemContainerStyle>
+                <TextBlock FontSize="18" 
+                           Text="№" 
+                           TextWrapping="Wrap"  
+                           HorizontalAlignment="Left" 
+                           Grid.Column="0" 
+                           TextAlignment="Center"/>
 
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid Height="50"
-                          Width="749">
+                <TextBlock FontSize="18" 
+                           Text="Тип" 
+                           TextWrapping="Wrap"  
+                           HorizontalAlignment="Left" 
+                           Grid.Column="1"  />
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="15"/>
-                            <ColumnDefinition Width="auto"
-                                              MaxWidth="300"/>
-                            <ColumnDefinition Width="100"
-                                              MaxWidth="200"/>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="150"/>
-                        </Grid.ColumnDefinitions>
+                <TextBlock FontSize="18" 
+                           Text="Название" 
+                           TextWrapping="Wrap" 
+                           HorizontalAlignment="Left" 
+                           Grid.Column="2"  />
 
+                <TextBlock FontSize="18" 
+                           Text="Номер" 
+                           TextWrapping="Wrap"  
+                           HorizontalAlignment="Left" 
+                           Grid.Column="3"  />
 
-                        <TextBlock Text="{Binding Id}"
-                                   TextWrapping="Wrap"
-                                   Grid.Column="0"
-                                   FontSize="15"
-                                   Background="#FF8E75FB"
-                                   Foreground="#F7F0FA" 
-                                   MinWidth="10"
-                                   TextAlignment="Center" Margin="0,16,0,16"/>
+                <TextBlock FontSize="18" 
+                           Text="Дата выхода" 
+                           TextWrapping="Wrap"  
+                           HorizontalAlignment="Left" 
+                           Grid.Column="4"  />
 
-                        <TextBlock Text="{Binding Type}"
-                                   TextWrapping="Wrap"
-                                   Grid.Column="1"
-                                   FontSize="15"
-                                   Background="#FF8E75FB"
-                                   Foreground="#F7F0FA" 
-                                   MinWidth="10"
-                                   TextAlignment="Center" Margin="0,16,0,16"/>
+                <TextBlock FontSize="18" 
+                           Text="Дата ввода в действие" 
+                           TextWrapping="Wrap"  
+                           HorizontalAlignment="Left" 
+                           Grid.Column="5"  />
 
-                        <TextBlock Text="{Binding Name}"
-                                   TextWrapping="WrapWithOverflow"
-                                   Grid.Column="2"
-                                   FontSize="15"
-                                   Background="#FF8E75FB"
-                                   Foreground="#F7F0FA" 
-                                   MinWidth="10"
-                                   TextAlignment="Center" Margin="0,16,0,16"/>
+            </Grid>
 
-                        <TextBlock Text="{Binding Number}"
-                                   TextWrapping="Wrap"
-                                   Grid.Column="3"
-                                   FontSize="15"
-                                   Background="#FF8E75FB"
-                                   Foreground="#F7F0FA" 
-                                   MinWidth="10"
-                                   TextAlignment="Center" Margin="0,16,0,16"/>
+            <ListBox Name="DocumentsListBox"
+                         ItemsSource="{Binding Mode=OneWay}"
+                         Grid.Row="1">
 
-                        <TextBlock Text="{Binding ReleaseDate}"
-                                   TextWrapping="Wrap"
-                                   Grid.Column="4"
-                                   FontSize="15"
-                                   Background="#FF8E75FB"
-                                   Foreground="#F7F0FA" 
-                                   MinWidth="10"
-                                   TextAlignment="Center" Margin="0,16,0,16"/>
+                <ListBox.ItemTemplate>
 
-                        <TextBlock Text="{Binding EntryDate}"
-                                   TextWrapping="Wrap"
-                                   Grid.Column="5"
-                                   FontSize="15"
-                                   Background="#FF8E75FB"
-                                   Foreground="#F7F0FA" 
-                                   MinWidth="10"
-                                   TextAlignment="Center" Margin="0,16,0,16"/>
+                    <DataTemplate>
+                        <StackPanel Margin="10">
+                            <Grid Width="auto" Background="#FFFFD301">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50" />
+                                    <ColumnDefinition Width="200" />
+                                    <ColumnDefinition Width="500" />
+                                    <ColumnDefinition Width="150" />
+                                    <ColumnDefinition Width="150" />
+                                    <ColumnDefinition Width="150" />
+                                </Grid.ColumnDefinitions>
 
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+                                <TextBlock FontSize="18" 
+                                           Text="{Binding Id}" 
+                                           TextWrapping="Wrap"  
+                                           HorizontalAlignment="Left" 
+                                           Grid.Column="0" 
+                                           TextAlignment="Center"/>
 
-        </ListBox>
--->
+                                <TextBlock FontSize="18" 
+                                           Text="{Binding Type}" 
+                                           TextWrapping="Wrap"  
+                                           HorizontalAlignment="Left" 
+                                           Grid.Column="1"  />
+
+                                <TextBlock FontSize="18" 
+                                           Text="{Binding Name}" 
+                                           TextWrapping="Wrap" 
+                                           HorizontalAlignment="Left" 
+                                           Grid.Column="2"  />
+
+                                <TextBlock FontSize="18" 
+                                           Text="{Binding Number}" 
+                                           TextWrapping="Wrap"  
+                                           HorizontalAlignment="Left" 
+                                           Grid.Column="3"  />
+
+                                <TextBlock FontSize="18" 
+                                           Text="{Binding ReleaseDate}" 
+                                           TextWrapping="Wrap"  
+                                           HorizontalAlignment="Left" 
+                                           Grid.Column="4"  />
+
+                                <TextBlock FontSize="18" 
+                                           Text="{Binding EntryDate}" 
+                                           TextWrapping="Wrap"  
+                                           HorizontalAlignment="Left" 
+                                           Grid.Column="5"  />
+                            </Grid>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+
+        </Grid>
     </Grid>
 </Window>

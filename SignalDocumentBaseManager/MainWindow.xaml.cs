@@ -22,6 +22,8 @@ namespace SignalDocumentBaseManager
     /// </summary>
     public partial class MainWindow : Window
     {
+        string searchFilter = "None"; //TODO: использовать в реализации алгоритма поиска с фильтром
+
         public MainWindow()
         {
             InitializeComponent();
@@ -107,6 +109,10 @@ namespace SignalDocumentBaseManager
             DocumentsListBox.Items.Refresh();
         }
 
+        private void Filter_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            searchFilter = Filter_ComboBox.SelectedValue.ToString();
+        }
 
         public class Document
         {
