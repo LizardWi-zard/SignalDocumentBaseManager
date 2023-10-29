@@ -32,7 +32,9 @@ namespace SignalDocumentBaseManager
         {
             InitializeComponent();
 
-            DocumentsListBox.ItemsSource = GetDocumentsAsync().Result.ToList();
+
+            documents = GetDocumentsAsync().Result.ToList();
+            DocumentsListBox.ItemsSource = documents;
             DocumentsListBox.Items.Refresh();
         }
 
@@ -58,19 +60,14 @@ namespace SignalDocumentBaseManager
             DocumentsListBox.Items.Refresh();
         }
 
+        private void AddDocument_Click(object sender, RoutedEventArgs e)
+        {
+            DocumentDataInput.Visibility = Visibility.Visible;
+        }
+
         private void Filter_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             searchFilter = Filter_ComboBox.SelectedValue.ToString();
-        }
-
-        async Task<Document[]> GetDocumentsAsync()
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                var result = await client.GetAsync("https://localhost:7231/Documents").ConfigureAwait(false);
-
-                return await result.Content.ReadFromJsonAsync<Document[]>();
-            }
         }
 
         public class Document
@@ -88,6 +85,67 @@ namespace SignalDocumentBaseManager
             public string EntryDate { get; set; }
 
             public string KeyWords { get; set; }
+        }
+
+        private void ApplyData_Click(object sender, RoutedEventArgs e)
+        {
+
+            DocumentDataInput.Visibility = Visibility.Collapsed;
+
+            Document newDocument = new Document();
+
+
+            newDocument.Id = documents.Count() + 1;
+            newDocument.Type = DocumentType_textbox.Text;
+            newDocument.Name = DocumentName_textbox.Text;
+            newDocument.Number = DocumentNumber_textbox.Text;
+            newDocument.ReleaseDate = DocumentReleaseDate_textbox.Text;
+            newDocument.EntryDate = DocumentEntryDate_textbox.Text;
+            newDocument.KeyWords = DocumentKeyWords_textbox.Text;
+
+            PostDocumentsAsync(newDocument);
+        }
+
+        private void GoBack_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: switch case selection of element to off
+            DocumentDataInput.Visibility = Visibility.Collapsed;
+        }
+
+        async Task<Document[]> GetDocumentsAsync()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                var result = await client.GetAsync("https://localhost:7231/Documents").ConfigureAwait(false);
+
+                return await result.Content.ReadFromJsonAsync<Document[]>();
+            }
+        }
+
+        async Task PostDocumentsAsync(Document documentToPost)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                var json = JsonConvert.SerializeObject(documentToPost);
+              
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                string ct = content.ToString();
+
+                try
+                {
+
+                    var result = await client.PostAsync("https://localhost:7231/Documents", content);
+
+                    result.EnsureSuccessStatusCode();
+
+                    //return await result.Content.ReadFromJsonAsync<Document>();
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("Exception heppend: " + ex);
+                }
+            }
         }
     }
 }
