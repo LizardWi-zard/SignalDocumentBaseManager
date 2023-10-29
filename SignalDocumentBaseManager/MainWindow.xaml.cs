@@ -68,5 +68,15 @@ namespace SignalDocumentBaseManager
 
             public string KeyWords { get; set; }
         }
+
+        private void Viewbox_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        {
+
+        }
+
+        private void DocumentsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

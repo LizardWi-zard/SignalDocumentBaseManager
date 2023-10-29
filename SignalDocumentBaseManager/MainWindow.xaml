@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SignalDocumentBaseManager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="База знаний" Height="450" Width="1320">
     <Window.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -108,22 +108,64 @@
         </Style>
     </Window.Resources>
 
-    <Grid>
 
-        <Grid Height="70"
-              VerticalAlignment="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="140"/>
-                <ColumnDefinition/>
-                <ColumnDefinition  Width="60"/>
-                <ColumnDefinition Width="60" />
-            </Grid.ColumnDefinitions>
 
-            <Image Grid.Column="0"
+
+
+
+
+
+
+
+    <ScrollViewer
+            
+            VerticalScrollBarVisibility="Auto"
+            HorizontalScrollBarVisibility="Auto"
+            
+            >
+        <Viewbox
+        
+            
+            
+            
+            MinHeight="400"
+            MinWidth="600">
+
+
+
+            <Grid
+            MinHeight="400" 
+            MinWidth="1200"
+            >
+
+
+
+                <Grid>
+
+
+
+
+
+                    <Grid Height="80"
+              Background="White"
+              
+              VerticalAlignment="Top" 
+                          Margin="0,0,0,0">
+                        <Grid.ColumnDefinitions>
+
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition  Width="60"/>
+                            <ColumnDefinition Width="60" />
+                        </Grid.ColumnDefinitions>
+
+                        <Image Grid.Column="0"
+                   Margin="10,0,0,0"
                    Source="/SignalLogo.png" 
                    Stretch="Uniform"/>
 
-            <TextBox Grid.Column="1"
+                        <TextBox Grid.Column="1"
+                    
                      Style="{DynamicResource RoundedTextBox}"
                      Name="seachBox" 
                      Width="auto"
@@ -135,14 +177,14 @@
                      HorizontalAlignment="Stretch"
                      VerticalAlignment="Center"/>
 
-            <ComboBox Grid.Column="2"
+                        <ComboBox Grid.Column="2"
                      Width="55"
                      Height="22"
-                     Background="Red"
+                     
                      HorizontalAlignment="Left"
                      VerticalAlignment="Center" />
 
-            <Button Grid.Column="3"
+                        <Button Grid.Column="3"
                     Style="{DynamicResource RoundedButton}"
                     Height="22"
                     Width="50"
@@ -152,128 +194,98 @@
                     VerticalAlignment="Center"
                     Click="SearchButton_Click"/>
 
-        </Grid>
+                    </Grid>
 
-        <Grid Margin="10,70,10,10">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
+                    <Grid Margin="0,80,10,0" >
 
-            <Grid Grid.Row="0"
-                  Margin="10,0,10,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50" />
-                    <ColumnDefinition Width="200" />
-                    <ColumnDefinition Width="500" />
-                    <ColumnDefinition Width="150" />
-                    <ColumnDefinition Width="150" />
-                    <ColumnDefinition Width="150" />
-                </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="7*" />
+                            <RowDefinition Height="3*"/>
+                        </Grid.RowDefinitions>
 
-                <TextBlock FontSize="18" 
-                           Text="№" 
-                           TextWrapping="Wrap"  
-                           HorizontalAlignment="Left" 
-                           Grid.Column="0" 
-                           TextAlignment="Center"/>
+                        <ListView Name="DocumentsListBox"
+                            MinWidth="1200"
+                            MinHeight="250"
+                         
+                         Background="WhiteSmoke"
+                         ItemsSource="{Binding Mode=OneWay}" Grid.RowSpan="3" Margin="10,0,5,10" SelectionChanged="DocumentsListBox_SelectionChanged">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn  Width="40" DisplayMemberBinding="{Binding Path=Id}" >ID</GridViewColumn>
+                                    <GridViewColumn  Width="200" DisplayMemberBinding="{Binding Path=Type}">Тип</GridViewColumn>
+                                    <GridViewColumn  Width="500" DisplayMemberBinding="{Binding Path=Name}">Название</GridViewColumn>
+                                    <GridViewColumn  Width="150" DisplayMemberBinding="{Binding Path=Number}">Номер</GridViewColumn>
+                                    <GridViewColumn  Width="150" DisplayMemberBinding="{Binding Path=ReleaseDate}">Дата выхода</GridViewColumn>
+                                    <GridViewColumn Width="150" DisplayMemberBinding="{Binding Path=EntryDate}">Дата ввода в действие</GridViewColumn>
 
-                <TextBlock FontSize="18" 
-                           Text="Тип" 
-                           TextWrapping="Wrap"  
-                           HorizontalAlignment="Left" 
-                           Grid.Column="1"  />
+                                </GridView>
+                            </ListView.View>
 
-                <TextBlock FontSize="18" 
-                           Text="Название" 
-                           TextWrapping="Wrap" 
-                           HorizontalAlignment="Left" 
-                           Grid.Column="2"  />
+                            <ListView.ItemTemplate>
 
-                <TextBlock FontSize="18" 
-                           Text="Номер" 
-                           TextWrapping="Wrap"  
-                           HorizontalAlignment="Left" 
-                           Grid.Column="3"  />
+                                <DataTemplate>
 
-                <TextBlock FontSize="18" 
-                           Text="Дата выхода" 
-                           TextWrapping="Wrap"  
-                           HorizontalAlignment="Left" 
-                           Grid.Column="4"  />
+                                    <StackPanel Margin="10">
+                                        <Grid Width="auto" Background="#FFFFD301">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition  Width="40" />
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="500" />
+                                                <ColumnDefinition Width="150" />
+                                                <ColumnDefinition Width="150" />
+                                                <ColumnDefinition Width="150" />
+                                            </Grid.ColumnDefinitions>
 
-                <TextBlock FontSize="18" 
-                           Text="Дата ввода в действие" 
-                           TextWrapping="Wrap"  
-                           HorizontalAlignment="Left" 
-                           Grid.Column="5"  />
-
-            </Grid>
-
-            <ListBox Name="DocumentsListBox"
-                         ItemsSource="{Binding Mode=OneWay}"
-                         Grid.Row="1">
-
-                <ListBox.ItemTemplate>
-
-                    <DataTemplate>
-                        <StackPanel Margin="10">
-                            <Grid Width="auto" Background="#FFFFD301">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50" />
-                                    <ColumnDefinition Width="200" />
-                                    <ColumnDefinition Width="500" />
-                                    <ColumnDefinition Width="150" />
-                                    <ColumnDefinition Width="150" />
-                                    <ColumnDefinition Width="150" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock FontSize="18" 
+                                            <TextBlock FontSize="18" 
                                            Text="{Binding Id}" 
                                            TextWrapping="Wrap"  
                                            HorizontalAlignment="Left" 
                                            Grid.Column="0" 
                                            TextAlignment="Center"/>
 
-                                <TextBlock FontSize="18" 
+                                            <TextBlock FontSize="18" 
                                            Text="{Binding Type}" 
                                            TextWrapping="Wrap"  
                                            HorizontalAlignment="Left" 
                                            Grid.Column="1"  />
 
-                                <TextBlock FontSize="18" 
+                                            <TextBlock FontSize="18" 
                                            Text="{Binding Name}" 
                                            TextWrapping="Wrap" 
                                            HorizontalAlignment="Left" 
                                            Grid.Column="2"  />
 
-                                <TextBlock FontSize="18" 
+                                            <TextBlock FontSize="18" 
                                            Text="{Binding Number}" 
                                            TextWrapping="Wrap"  
                                            HorizontalAlignment="Left" 
                                            Grid.Column="3"  />
 
-                                <TextBlock FontSize="18" 
+                                            <TextBlock FontSize="18" 
                                            Text="{Binding ReleaseDate}" 
                                            TextWrapping="Wrap"  
                                            HorizontalAlignment="Left" 
                                            Grid.Column="4"  />
 
-                                <TextBlock FontSize="18" 
+                                            <TextBlock FontSize="18" 
                                            Text="{Binding EntryDate}" 
                                            TextWrapping="Wrap"  
                                            HorizontalAlignment="Left" 
                                            Grid.Column="5"  />
-                            </Grid>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
+                                        </Grid>
 
-            </ListBox>
+                                    </StackPanel>
 
-        </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
 
-        <!--
+                        </ListView>
+
+                    </Grid>
+
+
+                    <!--
         
         <ListBox x:Name="PhotoListBox"
           ItemsSource="{Binding Mode=OneWay}" 
@@ -374,5 +386,11 @@
 
         </ListBox>
 -->
-    </Grid>
+
+                </Grid>
+
+            </Grid>
+
+        </Viewbox>
+    </ScrollViewer>
 </Window>
