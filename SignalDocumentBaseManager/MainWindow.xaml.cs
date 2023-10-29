@@ -104,6 +104,8 @@ namespace SignalDocumentBaseManager
             newDocument.KeyWords = DocumentKeyWords_textbox.Text;
 
             PostDocumentsAsync(newDocument);
+
+
         }
 
         private void GoBack_Click(object sender, RoutedEventArgs e)
@@ -127,19 +129,18 @@ namespace SignalDocumentBaseManager
             using (HttpClient client = new HttpClient())
             {
                 var json = JsonConvert.SerializeObject(documentToPost);
-              
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                string param = $"json={json}";
+
+                var content = new StringContent(param, Encoding.UTF8, "application/json");
 
                 string ct = content.ToString();
 
                 try
                 {
-
-                    var result = await client.PostAsync("https://localhost:7231/Documents", content);
+                    var result = await client.PostAsync("https://localhost:7231/Documents?" + param, content);
 
                     result.EnsureSuccessStatusCode();
-
-                    //return await result.Content.ReadFromJsonAsync<Document>();
                 }
                 catch(Exception ex)
                 {
