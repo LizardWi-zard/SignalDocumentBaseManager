@@ -147,5 +147,10 @@ namespace SignalDocumentBaseManager
                 }
             }
         }
+
+        private void DocumentsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
