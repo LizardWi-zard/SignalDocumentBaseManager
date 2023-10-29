@@ -45,7 +45,7 @@ namespace SignalDocumentBaseManager
 
             documents = GetDocumentsAsync().Result.ToList();
 
-            var input = seachBox.Text.ToLower();
+            var input = searchBox.Text.ToLower();
 
             var searchResult = documents.Where(document =>
             document.Id.ToString().ToLower().Contains(input) ||
