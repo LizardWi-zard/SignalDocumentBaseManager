@@ -109,6 +109,7 @@ namespace SignalDocumentBaseManager
                     }
                     break;
                 default:
+                    
                     searchResult = documents.Where(document =>
                     document.Id.ToString().ToLower().Contains(input) ||
                     document.Type.ToLower().Contains(input) ||
@@ -116,7 +117,9 @@ namespace SignalDocumentBaseManager
                     document.Number.ToLower().Contains(input) ||
                     document.ReleaseDate.ToLower().Contains(input) ||
                     document.EntryDate.ToLower().Contains(input) ||
-                    document.KeyWords.ToLower().Contains(input));
+                    document.KeyWords.ToLower().Contains(input)).ToList();
+
+                    break;
             }
             DocumentsListBox.ItemsSource = searchResult;
             DocumentsListBox.Items.Refresh();

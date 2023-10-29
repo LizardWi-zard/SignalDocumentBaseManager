@@ -109,7 +109,6 @@
     </Window.Resources>
 
     <Grid>
-
         <Grid Height="70"
               VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
@@ -144,12 +143,12 @@
                       HorizontalAlignment="Left"
                       VerticalAlignment="Center" >
 
-                <ComboBoxItem> "Тип" </ComboBoxItem>
-                <ComboBoxItem> "Название" </ComboBoxItem>
-                <ComboBoxItem> "Номер" </ComboBoxItem>
-                <ComboBoxItem> "Дата выхода" </ComboBoxItem>
-				<ComboBoxItem> "Дата ввода в действие" </ComboBoxItem>
-				<ComboBoxItem> "Ключевые слова" </ComboBoxItem>				
+                <ComboBoxItem>Тип</ComboBoxItem>
+                <ComboBoxItem>Название</ComboBoxItem>
+                <ComboBoxItem>Номер</ComboBoxItem>
+                <ComboBoxItem>Дата выхода</ComboBoxItem>
+				<ComboBoxItem>Дата ввода в действие</ComboBoxItem>
+				<ComboBoxItem>Ключевые слова</ComboBoxItem>				
 
             </ComboBox>
 
@@ -222,8 +221,8 @@
             </Grid>
 
             <ListBox Name="DocumentsListBox"
-                         ItemsSource="{Binding Mode=OneWay}"
-                         Grid.Row="1">
+                     ItemsSource="{Binding Mode=OneWay}"
+                     Grid.Row="1">
 
                 <ListBox.ItemTemplate>
 
