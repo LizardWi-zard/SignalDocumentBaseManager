@@ -177,7 +177,9 @@
                      HorizontalAlignment="Stretch"
                      VerticalAlignment="Center"/>
 
-                        <ComboBox Grid.Column="2"
+                        <ComboBox Name="Filter_ComboBox"
+                                  SelectionChanged="Filter_ComboBox_SelectionChanged"
+                                  Grid.Column="2"
                      Width="55"
                      Height="22"
                      
