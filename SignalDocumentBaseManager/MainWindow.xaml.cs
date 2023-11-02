@@ -260,5 +260,49 @@ namespace SignalDocumentBaseManager
 
             return lst;
         }
+
+        private void ShowAutorizationWindow_Click(object sender, RoutedEventArgs e)
+        {
+            PasswordEnter_textBox.Text = "";
+            LoginEnter_textBox.Text = "";
+
+            AutorizationWindow.Visibility = Visibility.Visible;
+        }
+
+        private void ShowRegistrationWindow_Click(object sender, RoutedEventArgs e)
+        {
+            PasswordCreationConfirm_textBox.Text = "";
+            PasswordCreation_textBox.Text = "";
+            LoginCreation_textBox.Text = "";
+
+            RegistrationWindow.Visibility = Visibility.Visible;
+
+            AutorizationWindow.Visibility = Visibility.Collapsed;
+        }
+
+        private void CloseAutorizationWindow_Click(object sender, RoutedEventArgs e)
+        {
+            AutorizationWindow.Visibility = Visibility.Collapsed;
+        }
+
+        private void ReturnToAutorizationWindow_Click(object sender, RoutedEventArgs e)
+        {
+            PasswordEnter_textBox.Text = "";
+            LoginEnter_textBox.Text = "";
+
+            RegistrationWindow.Visibility = Visibility.Collapsed;
+
+            AutorizationWindow.Visibility = Visibility.Visible;
+        }
+
+        private void SetCurrentUser_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CreateAccount_Click(object sender, RoutedEventArgs e)
+        {
+            // This method starts user account creation
+        }
     }
 }
