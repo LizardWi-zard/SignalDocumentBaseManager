@@ -28,6 +28,13 @@ namespace SignalDocumentBaseManager
         string searchFilter = "None";
         List<Document> documents = new List<Document>();
 
+        enum AccessLEvel
+        {
+            Admin = 1,
+            Worker = 2,
+            Guest = 3
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -45,10 +52,15 @@ namespace SignalDocumentBaseManager
 
             var input = searchBox.Text.ToLower();
 
-            SearchAtDataBase(input, documents);
+            var searchResult = SearchAtDataBase(input, documents);
+
+            searchResult = CheckForAccess(searchResult);
+
+            DocumentsListBox.ItemsSource = searchResult;
+            DocumentsListBox.Items.Refresh();
         }
              
-        private void SearchAtDataBase(string input, List<Document> documents)
+        private List<Document> SearchAtDataBase(string input, List<Document> documents)
         {
             List<Document> searchResult = new List<Document>();
 
@@ -126,8 +138,8 @@ namespace SignalDocumentBaseManager
 
                     break;
             }
-            DocumentsListBox.ItemsSource = searchResult;
-            DocumentsListBox.Items.Refresh();
+
+            return searchResult;
         }
 
         private void AddDocument_Click(object sender, RoutedEventArgs e)
@@ -161,6 +173,8 @@ namespace SignalDocumentBaseManager
             public string EntryDate { get; set; }
 
             public string KeyWords { get; set; }
+
+            public int AccessLevel { get; set; }
         }
 
         private void ApplyData_Click(object sender, RoutedEventArgs e)
@@ -223,6 +237,28 @@ namespace SignalDocumentBaseManager
         private void DocumentsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        List<Document> CheckForAccess(List<Document> documents)
+        {
+            Random r = new Random();
+            int user_level_access = r.Next(1, 3);
+  
+            var lst = documents;
+
+            switch (user_level_access)
+            {
+                case 2:
+                    lst = documents.Where(x => x.AccessLevel > 1).ToList();
+                    break;
+                case 3:
+                    lst = documents.Where(x => x.AccessLevel > 2).ToList();
+                    break;
+                default:
+                    break;
+            }
+
+            return lst;
         }
     }
 }
