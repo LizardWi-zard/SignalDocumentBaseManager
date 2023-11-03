@@ -27,6 +27,9 @@ namespace SignalDocumentBaseManager
     {
         string searchFilter = "None";
         List<Document> documents = new List<Document>();
+        string data = "[{\"ID\":1,\"Type\":\"ГОСТ (гос. стандарт)\",\"Name\":\"Информационные технологии. Комплекс стандартов на автоматизированные системы управления\",\"Number\":\"34.602-2020\",\"ReleaseDate\":\"2020-12-22\",\"EntryDate\":\"2022-01-01\",\"KeyWords\":\"технологии\"}, {\"ID\":2,\"Type\":\"РД (рук документ)\",\"Name\":\"Котлы паровые и водогрейные, трубопроводы пара и горячей воды.\",\"Number\":\"2730.940.103-92\",\"ReleaseDate\":\"1992-12-25\",\"EntryDate\":\"1993-01-01\",\"KeyWords\":\"Котлы\"}, {\"ID\":3,\"Type\":\"Указ (президента)\",\"Name\":\"О призыве в октябре — декабре 2023 г. граждан Российской Федерации на военную службу\",\"Number\":\"375\",\"ReleaseDate\":\"2023-09-29\",\"EntryDate\":\"2023-10-01\",\"KeyWords\":\"Указ\"}, {\"ID\":4,\"Type\":\"Постановление правительства\",\"Name\":\"О внесении изменений в Правила холодного водоснабжения и водоотведения\",\"Number\":\"1670\",\"ReleaseDate\":\"2023-10-10\",\"EntryDate\":\"2023-11-01\",\"KeyWords\":\"водоотведения водоснабжения\"}, {\"ID\":5,\"Type\":\"СТО (стандарт организации)\",\"Name\":\"Проведения аттестации испытательной лаборатории\",\"Number\":\"7.5.18-2020\",\"ReleaseDate\":\"2023-05-23\",\"EntryDate\":\"2023-07-01\",\"KeyWords\":\"аттестации лаборатории\"}, {\"ID\":6,\"Type\":\"МИ (металогическая инструкция)\",\"Name\":\"Ведение электронной документации\",\"Number\":\"8.12-2018\",\"ReleaseDate\":\"2018-08-16\",\"EntryDate\":\"2019-01-01\",\"KeyWords\":\"металогическая инструкция\"}]";
+
+        public List<string> DocumentTypes = new List<string>() { "ГОСТ", "Указ", "ОФВ", "ДТ", "АПБ", "ЖУКС", "ЫЫс"};
 
         enum AccessLEvel
         {
@@ -39,8 +42,12 @@ namespace SignalDocumentBaseManager
         {
             InitializeComponent();
 
+           // documents = GetDocumentsAsync().Result.ToList();
+            documents = JsonConvert.DeserializeObject<List<Document>>(data);
 
-            documents = GetDocumentsAsync().Result.ToList();
+            DocumentType_Combobox.ItemsSource = DocumentTypes;
+            DocumentType_Combobox.Items.Refresh();
+
             DocumentsListBox.ItemsSource = documents;
             DocumentsListBox.Items.Refresh();
         }
@@ -48,7 +55,10 @@ namespace SignalDocumentBaseManager
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
 
-            documents = GetDocumentsAsync().Result.ToList();
+            //documents = GetDocumentsAsync().Result.ToList();
+
+
+            documents = JsonConvert.DeserializeObject<List<Document>>(data);
 
             var input = searchBox.Text.ToLower();
 
@@ -184,14 +194,47 @@ namespace SignalDocumentBaseManager
             Document newDocument = new Document();
 
             newDocument.Id = documents.Count() + 1;
-            newDocument.Type = DocumentType_textbox.Text;
+            newDocument.Type = DocumentType_Combobox.SelectedValue.ToString();
             newDocument.Name = DocumentName_textbox.Text;
             newDocument.Number = DocumentNumber_textbox.Text;
             newDocument.ReleaseDate = DocumentReleaseDate_textbox.Text;
             newDocument.EntryDate = DocumentEntryDate_textbox.Text;
             newDocument.KeyWords = DocumentKeyWords_textbox.Text;
 
-            PostDocumentsAsync(newDocument);
+            ValidateDataAndSend(newDocument);
+        }
+
+        private void ValidateDataAndSend(Document newDocument)
+        {
+            // if 1930 < date < DateTime.Now
+            // if Name.Length > 0 || name != null
+            // if number != null
+
+            DateTime date = DateTime.Now;
+
+            bool isName = newDocument.Name.All(symbol => Char.IsLetter(symbol) || Char.IsPunctuation(symbol) || 
+                                                         Char.IsSeparator(symbol)) && newDocument.Name.Length > 0;
+            bool isNumber = newDocument.Number.All(symbol => (symbol >= '0' && symbol <= '9') ||(symbol == '.') || 
+                                                             (symbol == '/') || (symbol == '-')) && newDocument.Number.Length > 0;
+            bool isReleaseDate = DateTime.TryParse(newDocument.ReleaseDate, out date) && newDocument.ReleaseDate.Length > 0;
+            bool isEntryDate = DateTime.TryParse(newDocument.EntryDate, out date) && newDocument.EntryDate.Length > 0;
+
+            if (isName && isNumber && isReleaseDate && isEntryDate)
+            {
+                try
+                {
+                    PostDocumentsAsync(newDocument);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("The exceprion happend: " + ex.ToString());
+                }
+            }
+            else
+            {
+                MessageBox.Show("Некоторые поля не были заполнены или содержат недопустимые символы. Исправьте ошибки и попробуйте еще раз.");
+                DocumentDataInput.Visibility = Visibility.Visible;
+            }
         }
 
         private void GoBack_Click(object sender, RoutedEventArgs e)
