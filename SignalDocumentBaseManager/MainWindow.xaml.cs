@@ -347,5 +347,10 @@ namespace SignalDocumentBaseManager
         {
             // This method starts user account creation
         }
+
+        private void PasswordCreationConfirm_textBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }
