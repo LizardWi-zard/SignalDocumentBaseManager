@@ -352,11 +352,11 @@ namespace SignalDocumentBaseManager
             //bool sortingInAscendingOrder = 
             
             int docsCount = documents.Count;
-            for(int index_1 = 0; index_1 < docsCount - 1; index_1++)
+            for(int index_1 = 0; index_1 < docsCount - 1; index_1++) // эти индексы перепиги на нормальные названия типа "текущий" и "следущий"
             {
                 for(int index_2 = 0;index_2 < docsCount - index_1 - 1;index_2++) 
                 {
-                    if (documents[index_2].Type.CompareTo(documents[index_2+1].Type) > 0) {
+                    if (documents[index_2].Type.CompareTo(documents[index_2+1].Type) > 0) { // компер ту что с чем сравнивает (это я понимаю) и КАК он это делает (это объясни) 
                         var docCopy = documents[index_2];
                         documents[index_2] = documents[index_2 + 1];
                         documents[index_2 + 1] = docCopy;
@@ -366,6 +366,34 @@ namespace SignalDocumentBaseManager
             DocumentsListBox.Items.Refresh();
         }
 
+        private void SortById_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
+
+        private void SortByType_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByName_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByNumber_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByReleaseDate_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByEntryDate_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
