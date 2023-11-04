@@ -263,7 +263,7 @@
                         VerticalAlignment="Center"
                         Click="AddDocument_Click"/>
 
-                <Grid x:Name="DocumentDataInput" Visibility="Visible">
+                <Grid x:Name="DocumentDataInput" Visibility="Collapsed">
                     <Grid Background="#020202" Opacity="0.5"/>
                     <Border MinWidth="250"
                             Background="#F7F0FA"
@@ -610,7 +610,11 @@
                         </Grid>
                     </Border>
                 </Grid>
-            </Grid>
+
+			
+				
+				
+			</Grid>
         </Viewbox>
     </ScrollViewer>
 </Window>

@@ -27,7 +27,7 @@ namespace SignalDocumentBaseManager
     {
         string searchFilter = "None";
         List<Document> documents = new List<Document>();
-        string data = "[{\"ID\":1,\"Type\":\"ГОСТ (гос. стандарт)\",\"Name\":\"Информационные технологии. Комплекс стандартов на автоматизированные системы управления\",\"Number\":\"34.602-2020\",\"ReleaseDate\":\"2020-12-22\",\"EntryDate\":\"2022-01-01\",\"KeyWords\":\"технологии\"}, {\"ID\":2,\"Type\":\"РД (рук документ)\",\"Name\":\"Котлы паровые и водогрейные, трубопроводы пара и горячей воды.\",\"Number\":\"2730.940.103-92\",\"ReleaseDate\":\"1992-12-25\",\"EntryDate\":\"1993-01-01\",\"KeyWords\":\"Котлы\"}, {\"ID\":3,\"Type\":\"Указ (президента)\",\"Name\":\"О призыве в октябре — декабре 2023 г. граждан Российской Федерации на военную службу\",\"Number\":\"375\",\"ReleaseDate\":\"2023-09-29\",\"EntryDate\":\"2023-10-01\",\"KeyWords\":\"Указ\"}, {\"ID\":4,\"Type\":\"Постановление правительства\",\"Name\":\"О внесении изменений в Правила холодного водоснабжения и водоотведения\",\"Number\":\"1670\",\"ReleaseDate\":\"2023-10-10\",\"EntryDate\":\"2023-11-01\",\"KeyWords\":\"водоотведения водоснабжения\"}, {\"ID\":5,\"Type\":\"СТО (стандарт организации)\",\"Name\":\"Проведения аттестации испытательной лаборатории\",\"Number\":\"7.5.18-2020\",\"ReleaseDate\":\"2023-05-23\",\"EntryDate\":\"2023-07-01\",\"KeyWords\":\"аттестации лаборатории\"}, {\"ID\":6,\"Type\":\"МИ (металогическая инструкция)\",\"Name\":\"Ведение электронной документации\",\"Number\":\"8.12-2018\",\"ReleaseDate\":\"2018-08-16\",\"EntryDate\":\"2019-01-01\",\"KeyWords\":\"металогическая инструкция\"}]";
+        string data = "[{\"ID\":1,\"Type\":\"ГОСТ (гос. стандарт)\",\"Name\":\"Информационные технологии. Комплекс стандартов на автоматизированные системы управления\",\"Number\":\"34.602-2020\",\"ReleaseDate\":\"2020-12-22\",\"EntryDate\":\"2022-01-01\",\"KeyWords\":\"технологии\",\"AccessLevel\":1}, \r\n {\"ID\":2,\"Type\":\"РД (рук документ)\",\"Name\":\"Котлы паровые и водогрейные, трубопроводы пара и горячей воды.\",\"Number\":\"2730.940.103-92\",\"ReleaseDate\":\"1992-12-25\",\"EntryDate\":\"1993-01-01\",\"KeyWords\":\"Котлы\",\"AccessLevel\":3}, \r\n {\"ID\":3,\"Type\":\"Указ (президента)\",\"Name\":\"О призыве в октябре — декабре 2023 г. граждан Российской Федерации на военную службу\",\"Number\":\"375\",\"ReleaseDate\":\"2023-09-29\",\"EntryDate\":\"2023-10-01\",\"KeyWords\":\"Указ\",\"AccessLevel\":2}, \r\n {\"ID\":4,\"Type\":\"Постановление правительства\",\"Name\":\"О внесении изменений в Правила холодного водоснабжения и водоотведения\",\"Number\":\"1670\",\"ReleaseDate\":\"2023-10-10\",\"EntryDate\":\"2023-11-01\",\"KeyWords\":\"водоотведения водоснабжения\",\"AccessLevel\":1}, \r\n {\"ID\":5,\"Type\":\"СТО (стандарт организации)\",\"Name\":\"Проведения аттестации испытательной лаборатории\",\"Number\":\"7.5.18-2020\",\"ReleaseDate\":\"2023-05-23\",\"EntryDate\":\"2023-07-01\",\"KeyWords\":\"аттестации лаборатории\",\"AccessLevel\":1}, \r\n {\"ID\":6,\"Type\":\"МИ (металогическая инструкция)\",\"Name\":\"Ведение электронной документации\",\"Number\":\"8.12-2018\",\"ReleaseDate\":\"2018-08-16\",\"EntryDate\":\"2019-01-01\",\"KeyWords\":\"металогическая инструкция\",\"AccessLevel\":2}, \r\n {\"ID\":7,\"Type\":\"РИ (Рабочая инструкция)\",\"Name\":\"Обработка входящих писем\",\"Number\":\"5.45-2016\",\"ReleaseDate\":\"2016-07-24\",\"EntryDate\":\"2016-08-01\",\"KeyWords\":\"Обработка\",\"AccessLevel\":2}, \r\n {\"ID\":8,\"Type\":\"Приказ (директора предприятия)\",\"Name\":\"О поощрении работников годовой премией\",\"Number\":\"475\",\"ReleaseDate\":\"2022-12-24\",\"EntryDate\":\"2023-01-01\",\"KeyWords\":\"Приказ премия\",\"AccessLevel\":2}, \r\n {\"ID\":9,\"Type\":\"Уведомление (подразделений предприятия)\",\"Name\":\"О проведение годового собрания акционеров\",\"Number\":\"336\",\"ReleaseDate\":\"2023-03-03\",\"EntryDate\":\"2023-04-01\",\"KeyWords\":\"Уведомление \",\"AccessLevel\":3}]";
 
         public List<string> DocumentTypes = new List<string>() { "ГОСТ", "Указ", "ОФВ", "ДТ", "АПБ", "ЖУКС", "ЫЫс"};
 
@@ -227,7 +227,7 @@ namespace SignalDocumentBaseManager
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("The exceprion happend: " + ex.ToString());
+                    MessageBox.Show("The exception happend: " + ex.ToString());
                 }
             }
             else
@@ -347,5 +347,25 @@ namespace SignalDocumentBaseManager
         {
             // This method starts user account creation
         }
+        private void SortingByTypes_Click(object sender, RoutedEventArgs e) 
+        {
+            //bool sortingInAscendingOrder = 
+            
+            int docsCount = documents.Count;
+            for(int index_1 = 0; index_1 < docsCount - 1; index_1++)
+            {
+                for(int index_2 = 0;index_2 < docsCount - index_1 - 1;index_2++) 
+                {
+                    if (documents[index_2].Type.CompareTo(documents[index_2+1].Type) > 0) {
+                        var docCopy = documents[index_2];
+                        documents[index_2] = documents[index_2 + 1];
+                        documents[index_2 + 1] = docCopy;
+                    }
+                }
+            }
+            DocumentsListBox.Items.Refresh();
+        }
+
+
     }
 }
