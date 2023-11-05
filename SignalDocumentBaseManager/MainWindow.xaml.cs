@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
+using SignalDocumentBaseManager.Classes;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +29,25 @@ namespace SignalDocumentBaseManager
     {
         string searchFilter = "None";
         List<Document> documents = new List<Document>();
-        string data = "[{\"ID\":1,\"Type\":\"ГОСТ (гос. стандарт)\",\"Name\":\"Информационные технологии. Комплекс стандартов на автоматизированные системы управления\",\"Number\":\"34.602-2020\",\"ReleaseDate\":\"2020-12-22\",\"EntryDate\":\"2022-01-01\",\"KeyWords\":\"технологии\",\"AccessLevel\":1}, \r\n {\"ID\":2,\"Type\":\"РД (рук документ)\",\"Name\":\"Котлы паровые и водогрейные, трубопроводы пара и горячей воды.\",\"Number\":\"2730.940.103-92\",\"ReleaseDate\":\"1992-12-25\",\"EntryDate\":\"1993-01-01\",\"KeyWords\":\"Котлы\",\"AccessLevel\":3}, \r\n {\"ID\":3,\"Type\":\"Указ (президента)\",\"Name\":\"О призыве в октябре — декабре 2023 г. граждан Российской Федерации на военную службу\",\"Number\":\"375\",\"ReleaseDate\":\"2023-09-29\",\"EntryDate\":\"2023-10-01\",\"KeyWords\":\"Указ\",\"AccessLevel\":2}, \r\n {\"ID\":4,\"Type\":\"Постановление правительства\",\"Name\":\"О внесении изменений в Правила холодного водоснабжения и водоотведения\",\"Number\":\"1670\",\"ReleaseDate\":\"2023-10-10\",\"EntryDate\":\"2023-11-01\",\"KeyWords\":\"водоотведения водоснабжения\",\"AccessLevel\":1}, \r\n {\"ID\":5,\"Type\":\"СТО (стандарт организации)\",\"Name\":\"Проведения аттестации испытательной лаборатории\",\"Number\":\"7.5.18-2020\",\"ReleaseDate\":\"2023-05-23\",\"EntryDate\":\"2023-07-01\",\"KeyWords\":\"аттестации лаборатории\",\"AccessLevel\":1}, \r\n {\"ID\":6,\"Type\":\"МИ (металогическая инструкция)\",\"Name\":\"Ведение электронной документации\",\"Number\":\"8.12-2018\",\"ReleaseDate\":\"2018-08-16\",\"EntryDate\":\"2019-01-01\",\"KeyWords\":\"металогическая инструкция\",\"AccessLevel\":2}, \r\n {\"ID\":7,\"Type\":\"РИ (Рабочая инструкция)\",\"Name\":\"Обработка входящих писем\",\"Number\":\"5.45-2016\",\"ReleaseDate\":\"2016-07-24\",\"EntryDate\":\"2016-08-01\",\"KeyWords\":\"Обработка\",\"AccessLevel\":2}, \r\n {\"ID\":8,\"Type\":\"Приказ (директора предприятия)\",\"Name\":\"О поощрении работников годовой премией\",\"Number\":\"475\",\"ReleaseDate\":\"2022-12-24\",\"EntryDate\":\"2023-01-01\",\"KeyWords\":\"Приказ премия\",\"AccessLevel\":2}, \r\n {\"ID\":9,\"Type\":\"Уведомление (подразделений предприятия)\",\"Name\":\"О проведение годового собрания акционеров\",\"Number\":\"336\",\"ReleaseDate\":\"2023-03-03\",\"EntryDate\":\"2023-04-01\",\"KeyWords\":\"Уведомление \",\"AccessLevel\":3}]";
+        List<User> users = new List<User>();
+
+        string data = "[{\"ID\":1,\"Type\":\"ГОСТ (гос. стандарт)\",\"Name\":\"Информационные технологии. Комплекс стандартов на автоматизированные системы управления\",\"Number\":\"34.602-2020\",\"ReleaseDate\":\"2020-12-22\",\"EntryDate\":\"2022-01-01\",\"KeyWords\":\"технологии\",\"AccessLevel\":1}, " +
+                       "{\"ID\":2,\"Type\":\"РД (рук документ)\",\"Name\":\"Котлы паровые и водогрейные, трубопроводы пара и горячей воды.\",\"Number\":\"2730.940.103-92\",\"ReleaseDate\":\"1992-12-25\",\"EntryDate\":\"1993-01-01\",\"KeyWords\":\"Котлы\",\"AccessLevel\":3}," +
+                       "{\"ID\":3,\"Type\":\"Указ (президента)\",\"Name\":\"О призыве в октябре — декабре 2023 г. граждан Российской Федерации на военную службу\",\"Number\":\"375\",\"ReleaseDate\":\"2023-09-29\",\"EntryDate\":\"2023-10-01\",\"KeyWords\":\"Указ\",\"AccessLevel\":2}, " +
+                       "{\"ID\":4,\"Type\":\"Постановление правительства\",\"Name\":\"О внесении изменений в Правила холодного водоснабжения и водоотведения\",\"Number\":\"1670\",\"ReleaseDate\":\"2023-10-10\",\"EntryDate\":\"2023-11-01\",\"KeyWords\":\"водоотведения водоснабжения\",\"AccessLevel\":1}," +
+                       "{\"ID\":5,\"Type\":\"СТО (стандарт организации)\",\"Name\":\"Проведения аттестации испытательной лаборатории\",\"Number\":\"7.5.18-2020\",\"ReleaseDate\":\"2023-05-23\",\"EntryDate\":\"2023-07-01\",\"KeyWords\":\"аттестации лаборатории\",\"AccessLevel\":1}," +
+                       "{\"ID\":6,\"Type\":\"МИ (металогическая инструкция)\",\"Name\":\"Ведение электронной документации\",\"Number\":\"8.12-2018\",\"ReleaseDate\":\"2018-08-16\",\"EntryDate\":\"2019-01-01\",\"KeyWords\":\"металогическая инструкция\",\"AccessLevel\":2}," +
+                       "{\"ID\":7,\"Type\":\"РИ (Рабочая инструкция)\",\"Name\":\"Обработка входящих писем\",\"Number\":\"5.45-2016\",\"ReleaseDate\":\"2016-07-24\",\"EntryDate\":\"2016-08-01\",\"KeyWords\":\"Обработка\",\"AccessLevel\":2}, " +
+                       "{\"ID\":8,\"Type\":\"Приказ (директора предприятия)\",\"Name\":\"О поощрении работников годовой премией\",\"Number\":\"475\",\"ReleaseDate\":\"2022-12-24\",\"EntryDate\":\"2023-01-01\",\"KeyWords\":\"Приказ премия\",\"AccessLevel\":2}, " +
+                       "{\"ID\":9,\"Type\":\"Уведомление (подразделений предприятия)\",\"Name\":\"О проведение годового собрания акционеров\",\"Number\":\"336\",\"ReleaseDate\":\"2023-03-03\",\"EntryDate\":\"2023-04-01\",\"KeyWords\":\"Уведомление \",\"AccessLevel\":3}]";
+       
+        string localUsers = "[{\"Login\":\"111\",\"Password\":\"111\",\"AccessLevel\":1}," +
+                             "{\"Login\":\"222\",\"Password\":\"222\",\"AccessLevel\":2}," +
+                             "{\"Login\":\"333\",\"Password\":\"333\",\"AccessLevel\":3}," +
+                             "{\"Login\":\"1_Gosha_1\",\"Password\":\"nd13ah8\",\"AccessLevel\":2}," +
+                             "{\"Login\":\"VituaUtkin\",\"Password\":\"be1ur34g\",\"AccessLevel\":3}]";
+
+        User currentUser = null;
 
         public List<string> DocumentTypes = new List<string>() { "ГОСТ", "Указ", "ОФВ", "ДТ", "АПБ", "ЖУКС", "ЫЫс"};
 
@@ -42,14 +62,18 @@ namespace SignalDocumentBaseManager
         {
             InitializeComponent();
 
-           // documents = GetDocumentsAsync().Result.ToList();
             documents = JsonConvert.DeserializeObject<List<Document>>(data);
+            users = JsonConvert.DeserializeObject<List<User>>(localUsers);
+
+            TypeFilter_ComboBox.ItemsSource = DocumentTypes;
+            TypeFilter_ComboBox.Items.Refresh();
 
             DocumentType_Combobox.ItemsSource = DocumentTypes;
             DocumentType_Combobox.Items.Refresh();
 
-            DocumentsListBox.ItemsSource = documents;
-            DocumentsListBox.Items.Refresh();
+            // documents = GetDocumentsAsync().Result.ToList();
+
+            RefreshData();
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -285,19 +309,20 @@ namespace SignalDocumentBaseManager
         List<Document> CheckForAccess(List<Document> documents)
         {
             Random r = new Random();
-            int user_level_access = r.Next(1, 3);
+            int user_level_access = currentUser != null ? currentUser.AccessLevel : 3;
   
             var lst = documents;
 
             switch (user_level_access)
             {
                 case 2:
-                    lst = documents.Where(x => x.AccessLevel > 1).ToList();
+                    lst = documents.Where(x => (x.AccessLevel == 2 || x.AccessLevel == 3)).ToList();
                     break;
                 case 3:
-                    lst = documents.Where(x => x.AccessLevel > 2).ToList();
+                    lst = documents.Where(x => (x.AccessLevel == 3)).ToList();
                     break;
                 default:
+                    lst = documents;
                     break;
             }
 
@@ -340,12 +365,138 @@ namespace SignalDocumentBaseManager
 
         private void SetCurrentUser_Click(object sender, RoutedEventArgs e)
         {
+            var login = LoginEnter_textBox.Text;
+            var password = PasswordEnter_textBox.Text;
 
+            try
+            {
+                currentUser = (User)users.FirstOrDefault(x => x.Login == login && x.Password == password) ?? null;
+
+                if(currentUser == null)
+                {
+                    throw new NullReferenceException(); //UserNotFoundException
+                }
+
+                MessageBox.Show("Вход выполнен! \n Добро пожаловать, " + currentUser.Login);
+
+                AutorizationWindow.Visibility = Visibility.Collapsed;
+
+                RefreshData();
+            }
+            catch (NullReferenceException ex)
+            {
+                MessageBox.Show("Пользователь не найден\nПопробуйте снова");
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Ошибка: " + ex);
+            }
+        }
+
+        void RefreshData()
+        {
+            var accessableDocuments = CheckForAccess(documents);
+
+            DocumentsListBox.ItemsSource = accessableDocuments;
+            DocumentsListBox.Items.Refresh();
+        }
+
+        void RefreshData(List<Document> lst)
+        {
+            var accessableDocuments = CheckForAccess(lst);
+
+            DocumentsListBox.ItemsSource = accessableDocuments;
+            DocumentsListBox.Items.Refresh();
         }
 
         private void CreateAccount_Click(object sender, RoutedEventArgs e)
         {
             // This method starts user account creation
+            string newLogin = LoginCreation_textBox.Text;
+            string newPassword = PasswordCreation_textBox.Text;
+            string newPasswordComfirmation = PasswordCreationConfirm_textBox.Text;
+
+            try
+            {
+                if (String.IsNullOrEmpty(newPassword) && String.IsNullOrEmpty(newPasswordComfirmation) && newPassword == newPasswordComfirmation)
+                {
+                    User newUser = new User(newLogin, newPassword);
+                    currentUser = newUser;
+                    users.Add(newUser);
+                }
+
+                PasswordCreationConfirm_textBox.Text = "";
+                PasswordCreation_textBox.Text = "";
+                LoginCreation_textBox.Text = "";
+
+                RegistrationWindow.Visibility = Visibility.Collapsed;
+
+                AutorizationWindow.Visibility = Visibility.Collapsed;
+
+                MessageBox.Show("Аккаунт создан! \nДобро пожаловать, " + currentUser.Login);
+            }
+            catch(ArgumentException ex)
+            {
+                MessageBox.Show("Ошибка в создании пользовател\n" + ex);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Ошибка! \nОшибка: " + ex);
+            }
+        }
+
+        private void RemoveFilters_Click(object sender, RoutedEventArgs e)
+        {
+            DateFromFilter_DatePicker.SelectedDate = null;
+            DateBeforeFilter_DatePicker.SelectedDate = null;
+
+            //TypeFilter_ComboBox.SelectedItem = DocumentTypes[0];
+        }
+
+        private void TypeFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedItem = TypeFilter_ComboBox.SelectedValue.ToString().ToLower();
+
+            documents = JsonConvert.DeserializeObject<List<Document>>(data);
+
+            var input = searchBox.Text.ToLower();
+
+            var searchResult = SearchAtDataBase(input, documents);
+
+            searchResult = searchResult.Where(x => x.Type.ToLower().Contains(selectedItem)).ToList();
+
+            RefreshData(searchResult);
+        }
+
+        private void DateFromFilter_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var date = DateFromFilter_DatePicker.SelectedDate;
+
+            documents = JsonConvert.DeserializeObject<List<Document>>(data);
+
+            var input = searchBox.Text.ToLower();
+
+            var searchResult = documents;
+
+            searchResult = documents.Where(x => DateTime.Parse(x.EntryDate) > date).ToList();
+
+            RefreshData(searchResult);
+
+        }
+
+        private void DateBeforeFilter_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var date = DateFromFilter_DatePicker.SelectedDate;
+
+            documents = JsonConvert.DeserializeObject<List<Document>>(data);
+
+            var input = searchBox.Text.ToLower();
+
+            var searchResult = documents;
+
+            searchResult = documents.Where(x => DateTime.Parse(x.EntryDate) < date).ToList();
+
+            RefreshData(searchResult);
         }
 
         private void SortById_Click(object sender, RoutedEventArgs e)
