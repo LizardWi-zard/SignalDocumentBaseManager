@@ -225,12 +225,13 @@
                                        HorizontalAlignment="Right"
                                        FontSize="16"/>
 
-                            <ComboBox Grid.Column="2"
+                            <ComboBox Name ="TypeFilter_ComboBox" Grid.Column="2"
                                       Height="22"
                                       Width="70"
                                       SelectedIndex="0"
                                       ItemsSource="{Binding Mode=OneWay}"
-                                      HorizontalAlignment="Left">
+                                      HorizontalAlignment="Left"
+                                      SelectionChanged="TypeFilter_SelectionChanged">
 
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
@@ -245,14 +246,15 @@
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Right"
                                        FontSize="16"/>
-                            
-                            <DatePicker Grid.Column="4"
-                                        SelectedDate="01/01/23"
+
+                            <DatePicker Name="DateFromFilter_DatePicker" 
+                                        Grid.Column="4"
                                         SelectedDateFormat="Long"
                                         BorderBrush="Transparent"
                                         FontSize="18"
                                         HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"/>
+                                        VerticalAlignment="Center"
+                                        SelectedDateChanged="DateFromFilter_SelectedDateChanged"/>
 
 
                             <TextBlock Grid.Column="5"
@@ -262,18 +264,20 @@
                                        HorizontalAlignment="Right"
                                        FontSize="16"/>
 
-                            <DatePicker Grid.Column="6"
-                                        SelectedDate="01/01/23"
+                            <DatePicker Name="DateBeforeFilter_DatePicker" 
+                                        Grid.Column="6"
                                         SelectedDateFormat="Long"
                                         BorderBrush="Transparent"
                                         FontSize="18"
                                         HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"/>
+                                        VerticalAlignment="Center"
+                                        SelectedDateChanged="DateBeforeFilter_SelectedDateChanged"/>
 
                             <Button Grid.Column="7"
                                     Content="Отчистить фильтры"
                                     Background="Transparent"
-                                    BorderThickness="0"/>
+                                    BorderThickness="0"
+                                    Click="RemoveFilters_Click"/>
 
                         </Grid>
 
