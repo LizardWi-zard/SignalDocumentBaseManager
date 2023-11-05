@@ -251,7 +251,7 @@ namespace SignalDocumentBaseManager
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("The exceprion happend: " + ex.ToString());
+                    MessageBox.Show("The exception happend: " + ex.ToString());
                 }
             }
             else
@@ -497,6 +497,52 @@ namespace SignalDocumentBaseManager
             searchResult = documents.Where(x => DateTime.Parse(x.EntryDate) < date).ToList();
 
             RefreshData(searchResult);
+        }
+
+        private void SortById_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByType_Click(object sender, RoutedEventArgs e)
+        {
+            //bool sortingInAscendingOrder
+
+            int docsCount = documents.Count;
+            for (int indexOfLastDocumentInSortedPart = 0; indexOfLastDocumentInSortedPart < docsCount - 1; indexOfLastDocumentInSortedPart++)// indexOfLastDocumentInSortedPart is index of last document, which is in sorted part of documents
+            {
+                for (int indexOfCurrentDocument = 0; indexOfCurrentDocument < docsCount - indexOfLastDocumentInSortedPart - 1; indexOfCurrentDocument++)
+                {
+                    int indexOfNextDocument = indexOfCurrentDocument + 1;
+                    if (documents[indexOfCurrentDocument].Type.CompareTo(documents[indexOfNextDocument].Type) > 0)
+                    {
+                        var docCopy = documents[indexOfCurrentDocument];                        
+                        documents[indexOfCurrentDocument] = documents[indexOfNextDocument];
+                        documents[indexOfNextDocument] = docCopy;
+                    }
+                }
+            }
+            DocumentsListBox.Items.Refresh();
+        }
+
+        private void SortByName_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByNumber_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByReleaseDate_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SortByEntryDate_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

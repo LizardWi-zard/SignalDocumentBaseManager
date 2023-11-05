@@ -301,13 +301,29 @@
                                   SelectionChanged="DocumentsListBox_SelectionChanged">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn  Width="40" DisplayMemberBinding="{Binding Path=Id}" >ID</GridViewColumn>
-                                    <GridViewColumn  Width="200" DisplayMemberBinding="{Binding Path=Type}">Тип</GridViewColumn>
-                                    <GridViewColumn  Width="500" DisplayMemberBinding="{Binding Path=Name}">Название</GridViewColumn>
-                                    <GridViewColumn  Width="150" DisplayMemberBinding="{Binding Path=Number}">Номер</GridViewColumn>
-                                    <GridViewColumn  Width="150" DisplayMemberBinding="{Binding Path=ReleaseDate}">Дата выхода</GridViewColumn>
-                                    <GridViewColumn Width="150" DisplayMemberBinding="{Binding Path=EntryDate}">Дата ввода в действие</GridViewColumn>
+                                    <GridViewColumn Width="40" DisplayMemberBinding="{Binding Path=Id}">
+                                        <GridViewColumnHeader Content="Id" Click="SortById_Click"/>
+                                    </GridViewColumn>
+                                    
+                                    <GridViewColumn Width="200" DisplayMemberBinding="{Binding Path=Type}">
+										<GridViewColumnHeader Content="Тип" Click="SortByType_Click"/>
+                                    </GridViewColumn>
 
+                                    <GridViewColumn Width="500" DisplayMemberBinding="{Binding Path=Name}">
+                                        <GridViewColumnHeader Content="Название" Click="SortByName_Click"/>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Width="150" DisplayMemberBinding="{Binding Path=Number}">
+                                        <GridViewColumnHeader Content="Номер" Click="SortByNumber_Click"/>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Width="150" DisplayMemberBinding="{Binding Path=ReleaseDate}">
+                                        <GridViewColumnHeader Content="Дата выхода" Click="SortByReleaseDate_Click"/>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Width="150" DisplayMemberBinding="{Binding Path=EntryDate}">
+                                        <GridViewColumnHeader Content="Дата ввода в действие" Click="SortByEntryDate_Click"/>
+                                    </GridViewColumn>
                                 </GridView>
                             </ListView.View>
 
