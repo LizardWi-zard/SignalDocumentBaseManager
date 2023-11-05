@@ -190,7 +190,7 @@
                                     </GridViewColumn>
                                     
                                     <GridViewColumn Width="200" DisplayMemberBinding="{Binding Path=Type}">
-                                        <GridViewColumnHeader Content="Тип" Click="SortByType_Click"/>
+										<GridViewColumnHeader Content="Тип" Click="SortByType_Click"/>
                                     </GridViewColumn>
 
                                     <GridViewColumn Width="500" DisplayMemberBinding="{Binding Path=Name}">

@@ -347,24 +347,6 @@ namespace SignalDocumentBaseManager
         {
             // This method starts user account creation
         }
-        private void SortingByTypes_Click(object sender, RoutedEventArgs e) 
-        {
-            //bool sortingInAscendingOrder = 
-            
-            int docsCount = documents.Count;
-            for(int index_1 = 0; index_1 < docsCount - 1; index_1++) // эти индексы перепиги на нормальные названия типа "текущий" и "следущий"
-            {
-                for(int index_2 = 0;index_2 < docsCount - index_1 - 1;index_2++) 
-                {
-                    if (documents[index_2].Type.CompareTo(documents[index_2+1].Type) > 0) { // компер ту что с чем сравнивает (это я понимаю) и КАК он это делает (это объясни) 
-                        var docCopy = documents[index_2];
-                        documents[index_2] = documents[index_2 + 1];
-                        documents[index_2 + 1] = docCopy;
-                    }
-                }
-            }
-            DocumentsListBox.Items.Refresh();
-        }
 
         private void SortById_Click(object sender, RoutedEventArgs e)
         {
@@ -373,7 +355,23 @@ namespace SignalDocumentBaseManager
 
         private void SortByType_Click(object sender, RoutedEventArgs e)
         {
+            //bool sortingInAscendingOrder
 
+            int docsCount = documents.Count;
+            for (int indexOfLastDocumentInSortedPart = 0; indexOfLastDocumentInSortedPart < docsCount - 1; indexOfLastDocumentInSortedPart++)// indexOfLastDocumentInSortedPart is index of last document, which is in sorted part of documents
+            {
+                for (int indexOfCurrentDocument = 0; indexOfCurrentDocument < docsCount - indexOfLastDocumentInSortedPart - 1; indexOfCurrentDocument++)
+                {
+                    int indexOfNextDocument = indexOfCurrentDocument + 1;
+                    if (documents[indexOfCurrentDocument].Type.CompareTo(documents[indexOfNextDocument].Type) > 0)
+                    {
+                        var docCopy = documents[indexOfCurrentDocument];                        
+                        documents[indexOfCurrentDocument] = documents[indexOfNextDocument];
+                        documents[indexOfNextDocument] = docCopy;
+                    }
+                }
+            }
+            DocumentsListBox.Items.Refresh();
         }
 
         private void SortByName_Click(object sender, RoutedEventArgs e)
