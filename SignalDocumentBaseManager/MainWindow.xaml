@@ -590,7 +590,8 @@
                                     Style="{DynamicResource RoundedButton}"
                                     Background="#FFFFD301"
                                     Click="ShowRegistrationWindow_Click"                                        
-                                    VerticalAlignment="Top" Height="20"/>
+                                    VerticalAlignment="Top"
+                                    Height="20"/>
 
 
                             <Grid Grid.Column="1"
@@ -621,7 +622,7 @@
                     </Border>
                 </Grid>
 
-                <Grid x:Name="RegistrationWindow" Visibility="Collapsed">
+                <Grid x:Name="RegistrationWindow" Visibility="Visible">
                     <Grid Background="#020202" Opacity="0.5"/>
                     <Border MinWidth="250"
                             Background="White"
@@ -686,7 +687,7 @@
                                      Margin="5,18,5,18"
                                      Padding="5,2,0,0"
                                      BorderBrush="#FFFFD301"
-                                     BorderThickness="2" RenderTransformOrigin="0.509,0.022"/>
+                                     BorderThickness="2"/>
 
                             <TextBlock Grid.Column="1" 
                                        Grid.Row="3" 
@@ -701,7 +702,7 @@
                                      Margin="5,18,5,18"
                                      Padding="5,2,0,0"
                                      BorderBrush="#FFFFD301"
-                                     BorderThickness="2" TextChanged="PasswordCreationConfirm_textBox_TextChanged"/>
+                                     BorderThickness="2"/>
 
                             <Grid Grid.Column="1"
                                   Grid.Row="4">

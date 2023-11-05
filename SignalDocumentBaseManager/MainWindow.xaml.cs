@@ -544,10 +544,5 @@ namespace SignalDocumentBaseManager
         {
 
         }
-
-        private void PasswordCreationConfirm_textBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
     }
 }
