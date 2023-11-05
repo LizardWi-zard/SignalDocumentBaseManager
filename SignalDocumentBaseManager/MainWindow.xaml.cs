@@ -6,6 +6,7 @@ using System.DirectoryServices;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
@@ -446,7 +447,10 @@ namespace SignalDocumentBaseManager
 
         private void RemoveFilters_Click(object sender, RoutedEventArgs e)
         {
+            DateFromFilter_DatePicker.SelectedDate = null;
+            DateBeforeFilter_DatePicker.SelectedDate = null;
 
+            //TypeFilter_ComboBox.SelectedItem = DocumentTypes[0];
         }
 
         private void TypeFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
