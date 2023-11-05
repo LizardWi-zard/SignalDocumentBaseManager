@@ -515,116 +515,13 @@
               
 
                 <Grid x:Name="AutorizationWindow" Visibility="Collapsed">
-                    <Grid Background="#020202" Opacity="0.5"/>
+                    <Grid Background="#020202" 
+                          Opacity="0.5"/>
                     <Border MinWidth="250"
                             Background="White"
-                            BorderBrush="#FFFFD301"
+                            BorderBrush="Black"
                             CornerRadius="8"
-                            BorderThickness="2"  
-                            HorizontalAlignment="Center" 
-                            VerticalAlignment="Center" 
-                            Height="230" 
-                            Width="200">
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="20"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="20"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="20"/>
-                                <RowDefinition Height="60"/>
-                                <RowDefinition Height="60"/>
-                                <RowDefinition Height="40"/>
-                                <RowDefinition Height="40"/>
-
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Grid.Column="1" 
-                                       Grid.Row="0"
-                                       Text="Авторизация"
-                                       HorizontalAlignment="Center"
-                                       TextWrapping="Wrap"/>
-
-
-                            <TextBlock Grid.Column="1" 
-                                       Grid.Row="1"
-                                       Margin="0, 15, 0, 0"
-                                       Text="Введите логин"
-                                       TextWrapping="Wrap"
-                                       TextAlignment="Center"/>
-                            <TextBox Name="LoginEnter_textBox"
-                                     Grid.Column="1" 
-                                     Grid.Row="1" 
-                                     Margin="5,35, 5, 0"
-                                     BorderBrush="#FFFFD301"
-                                     BorderThickness="2"/>
-
-                            <TextBlock Grid.Column="1" 
-                                       Grid.Row="2" 
-                                       Margin="0, 15, 0, 0"
-                                       Text="Введите пароль"           
-                                       TextWrapping="Wrap"           
-                                       TextAlignment="Center"/>
-                            <TextBox Name="PasswordEnter_textBox"
-                                     Grid.Column="1" 
-                                     Grid.Row="2" 
-                                     Margin="5, 35, 5, 0"
-                                     BorderBrush="#FFFFD301"
-                                     BorderThickness="2"/>
-
-
-                            <Button Grid.Column="1"
-                                    Grid.Row="3"
-                                    Margin="5, 0"
-                                    Content="Зарегистрироваться"
-                                    Style="{DynamicResource RoundedButton}"
-                                    Background="White"
-                                    BorderBrush="#FFFFD301"
-                                    BorderThickness="2"
-                                    Click="ShowRegistrationWindow_Click"                                        
-                                    VerticalAlignment="Bottom"/>
-
-
-                            <Grid Grid.Column="1"
-                                   Grid.Row="4">
-
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*"/>
-                                    <ColumnDefinition Width="1*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Button Margin="5,5,5,5" 
-                                        Content="Назад" 
-                                        Style="{DynamicResource RoundedButton}"
-                                        Background="White"
-                                        BorderBrush="#FFFFD301"
-                                        BorderThickness="2"
-                                        Click="CloseAutorizationWindow_Click"
-                                        Grid.Column="0"/>
-
-                                <Button Margin="5,5,5,5" 
-                                        Content="Войти"  
-                                        Style="{DynamicResource RoundedButton}"
-                                        Background="White"
-                                        BorderBrush="#FFFFD301"
-                                        BorderThickness="2"
-                                        Click="SetCurrentUser_Click"
-                                        Grid.Column="1" Grid.ColumnSpan="3"/>
-                            </Grid>
-                        </Grid>
-                    </Border>
-                </Grid>
-
-                <Grid x:Name="RegistrationWindow" Visibility="Collapsed">
-                    <Grid Background="#020202" Opacity="0.5"/>
-                    <Border MinWidth="250"
-                            Background="White"
-                            BorderBrush="#FFFFD301"
-                            CornerRadius="8"
-                            BorderThickness="2"  
+                            BorderThickness="1"  
                             HorizontalAlignment="Center" 
                             VerticalAlignment="Center" 
                             Height="250" 
@@ -638,17 +535,19 @@
                             </Grid.ColumnDefinitions>
 
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="30"/>
                                 <RowDefinition Height="60"/>
                                 <RowDefinition Height="60"/>
-                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="40"/>
                                 <RowDefinition Height="40"/>
 
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Column="1" 
                                        Grid.Row="0"
-                                       Text="Создание аккаунта"
+                                       Margin="3"
+                                       Text="Авторизация"
+                                       FontSize="18"
                                        HorizontalAlignment="Center"
                                        TextWrapping="Wrap"/>
 
@@ -659,10 +558,12 @@
                                        Text="Введите логин"
                                        TextWrapping="Wrap"
                                        TextAlignment="Center"/>
-                            <TextBox Name="LoginCreation_textBox"
+                            <TextBox Name="LoginEnter_textBox"
+                                     Style="{DynamicResource RoundedTextBox}"
                                      Grid.Column="1" 
                                      Grid.Row="1" 
                                      Margin="5,35, 5, 0"
+                                     Padding="5,2,0,0"
                                      BorderBrush="#FFFFD301"
                                      BorderThickness="2"/>
 
@@ -672,23 +573,134 @@
                                        Text="Введите пароль"           
                                        TextWrapping="Wrap"           
                                        TextAlignment="Center"/>
-                            <TextBox Name="PasswordCreation_textBox"
+                            <TextBox Name="PasswordEnter_textBox"
+                                     Style="{DynamicResource RoundedTextBox}"
                                      Grid.Column="1" 
                                      Grid.Row="2" 
                                      Margin="5, 35, 5, 0"
+                                     Padding="5,2,0,0"
+                                     BorderBrush="#FFFFD301"
+                                     BorderThickness="2"/>
+
+
+                            <Button Grid.Column="1"
+                                    Grid.Row="3"
+                                    Margin="5,20,5,0"
+                                    Content="Зарегистрироваться"
+                                    Style="{DynamicResource RoundedButton}"
+                                    Background="#FFFFD301"
+                                    Click="ShowRegistrationWindow_Click"                                        
+                                    VerticalAlignment="Top"
+                                    Height="20"/>
+
+
+                            <Grid Grid.Column="1"
+                                   Grid.Row="4">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Margin="5,10,5,5" 
+                                        Height="25"
+                                        Content="Назад" 
+                                        Style="{DynamicResource RoundedButton}"
+                                        Background="#FFFFD301"
+                                        Click="CloseAutorizationWindow_Click"
+                                        Grid.Column="0"/>
+
+                                <Button Margin="5,10,5,5" 
+                                        Height="25"
+                                        Content="Войти"  
+                                        Style="{DynamicResource RoundedButton}"
+                                        Background="#FFFFD301"
+                                        Click="SetCurrentUser_Click"
+                                        Grid.Column="1" Grid.ColumnSpan="3"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <Grid x:Name="RegistrationWindow" Visibility="Visible">
+                    <Grid Background="#020202" Opacity="0.5"/>
+                    <Border MinWidth="250"
+                            Background="White"
+                            BorderBrush="Black"
+                            CornerRadius="8"
+                            BorderThickness="1"  
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" 
+                            Height="250" 
+                            Width="200">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="20"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="40"/>
+
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Column="1" 
+                                       Grid.Row="0"
+                                       Margin="3"
+                                       FontSize="18"
+                                       Text="Создание аккаунта"
+                                       HorizontalAlignment="Center"
+                                       TextWrapping="Wrap"/>
+
+
+                            <TextBlock Grid.Column="1" 
+                                       Grid.Row="1"
+                                       Margin="0, 0, 0, 0"
+                                       Text="Введите логин"
+                                       TextWrapping="Wrap"
+                                       TextAlignment="Center"/>
+                            <TextBox Name="LoginCreation_textBox"
+                                     Style="{DynamicResource RoundedTextBox}"
+                                     Grid.Column="1" 
+                                     Grid.Row="1" 
+                                     Margin="5,18,5,18"
+                                     Padding="5,2,0,0"
+                                     BorderBrush="#FFFFD301"
+                                     BorderThickness="2"/>
+
+                            <TextBlock Grid.Column="1" 
+                                       Grid.Row="2" 
+                                       Margin="0, 0, 0, 0"
+                                       Text="Введите пароль"           
+                                       TextWrapping="Wrap"           
+                                       TextAlignment="Center"/>
+                            <TextBox Name="PasswordCreation_textBox"
+                                     Style="{DynamicResource RoundedTextBox}"
+                                     Grid.Column="1" 
+                                     Grid.Row="2" 
+                                     Margin="5,18,5,18"
+                                     Padding="5,2,0,0"
                                      BorderBrush="#FFFFD301"
                                      BorderThickness="2"/>
 
                             <TextBlock Grid.Column="1" 
                                        Grid.Row="3" 
-                                       Margin="0, 15, 0, 0"
+                                       Margin="0, 0, 0, 0"
                                        Text="Введите пароль повторно"           
                                        TextWrapping="Wrap"           
                                        TextAlignment="Center"/>
                             <TextBox Name="PasswordCreationConfirm_textBox"
+                                     Style="{DynamicResource RoundedTextBox}"
                                      Grid.Column="1" 
                                      Grid.Row="3" 
-                                     Margin="5, 35, 5, 0"
+                                     Margin="5,18,5,18"
+                                     Padding="5,2,0,0"
                                      BorderBrush="#FFFFD301"
                                      BorderThickness="2"/>
 
@@ -700,21 +712,19 @@
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Button Margin="5,5,5,5" 
+                                <Button Margin="5,0,5,10" 
+                                        Height="25"
                                         Content="Назад" 
                                         Style="{DynamicResource RoundedButton}"
-                                        Background="White"
-                                        BorderBrush="#FFFFD301"
-                                        BorderThickness="2"
+                                        Background="#FFFFD301"
                                         Click="ReturnToAutorizationWindow_Click"
                                         Grid.Column="0"/>
 
-                                <Button Margin="5,5,5,5" 
+                                <Button Margin="5,0,5,10" 
+                                        Height="25"
                                         Content="Создать"  
                                         Style="{DynamicResource RoundedButton}"
-                                        Background="White"
-                                        BorderBrush="#FFFFD301"
-                                        BorderThickness="2"
+                                        Background="#FFFFD301"
                                         Click="CreateAccount_Click"
                                         Grid.Column="1"
                                         Grid.ColumnSpan="3"/>
