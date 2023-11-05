@@ -64,6 +64,9 @@ namespace SignalDocumentBaseManager
             documents = JsonConvert.DeserializeObject<List<Document>>(data);
             users = JsonConvert.DeserializeObject<List<User>>(localUsers);
 
+            TypeFilter_ComboBox.ItemsSource = DocumentTypes;
+            TypeFilter_ComboBox.Items.Refresh();
+
             DocumentType_Combobox.ItemsSource = DocumentTypes;
             DocumentType_Combobox.Items.Refresh();
 
@@ -397,6 +400,14 @@ namespace SignalDocumentBaseManager
             DocumentsListBox.Items.Refresh();
         }
 
+        void RefreshData(List<Document> lst)
+        {
+            var accessableDocuments = CheckForAccess(lst);
+
+            DocumentsListBox.ItemsSource = accessableDocuments;
+            DocumentsListBox.Items.Refresh();
+        }
+
         private void CreateAccount_Click(object sender, RoutedEventArgs e)
         {
             // This method starts user account creation
@@ -431,6 +442,57 @@ namespace SignalDocumentBaseManager
             {
                 MessageBox.Show("Ошибка! \nОшибка: " + ex);
             }
+        }
+
+        private void RemoveFilters_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TypeFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedItem = TypeFilter_ComboBox.SelectedValue.ToString().ToLower();
+
+            documents = JsonConvert.DeserializeObject<List<Document>>(data);
+
+            var input = searchBox.Text.ToLower();
+
+            var searchResult = SearchAtDataBase(input, documents);
+
+            searchResult = searchResult.Where(x => x.Type.ToLower().Contains(selectedItem)).ToList();
+
+            RefreshData(searchResult);
+        }
+
+        private void DateFromFilter_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var date = DateFromFilter_DatePicker.SelectedDate;
+
+            documents = JsonConvert.DeserializeObject<List<Document>>(data);
+
+            var input = searchBox.Text.ToLower();
+
+            var searchResult = documents;
+
+            searchResult = documents.Where(x => DateTime.Parse(x.EntryDate) > date).ToList();
+
+            RefreshData(searchResult);
+
+        }
+
+        private void DateBeforeFilter_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var date = DateFromFilter_DatePicker.SelectedDate;
+
+            documents = JsonConvert.DeserializeObject<List<Document>>(data);
+
+            var input = searchBox.Text.ToLower();
+
+            var searchResult = documents;
+
+            searchResult = documents.Where(x => DateTime.Parse(x.EntryDate) < date).ToList();
+
+            RefreshData(searchResult);
         }
     }
 }
