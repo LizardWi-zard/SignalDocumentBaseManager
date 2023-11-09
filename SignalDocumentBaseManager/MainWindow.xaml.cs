@@ -536,12 +536,44 @@ namespace SignalDocumentBaseManager
 
         private void SortByReleaseDate_Click(object sender, RoutedEventArgs e)
         {
-
+            int docsCount = documents.Count;
+            for (int indexOfLastDocumentInSortedPart = 0; indexOfLastDocumentInSortedPart < docsCount - 1; indexOfLastDocumentInSortedPart++)// indexOfLastDocumentInSortedPart is index of last document, which is in sorted part of documents
+            {
+                for (int indexOfCurrentDocument = 0; indexOfCurrentDocument < docsCount - indexOfLastDocumentInSortedPart - 1; indexOfCurrentDocument++)
+                {
+                    int indexOfNextDocument = indexOfCurrentDocument + 1;
+                    DateTime currentReleaseDate = DateTime.Parse(documents[indexOfCurrentDocument].ReleaseDate);
+                    DateTime nextReleaseDate = DateTime.Parse(documents[indexOfNextDocument].ReleaseDate);
+                    if (currentReleaseDate.CompareTo(nextReleaseDate) > 0)
+                    {
+                        var docCopy = documents[indexOfCurrentDocument];
+                        documents[indexOfCurrentDocument] = documents[indexOfNextDocument];
+                        documents[indexOfNextDocument] = docCopy;
+                    }
+                }
+            }
+            DocumentsListBox.Items.Refresh();
         }
 
         private void SortByEntryDate_Click(object sender, RoutedEventArgs e)
         {
-
+            int docsCount = documents.Count;
+            for (int indexOfLastDocumentInSortedPart = 0; indexOfLastDocumentInSortedPart < docsCount - 1; indexOfLastDocumentInSortedPart++)// indexOfLastDocumentInSortedPart is index of last document, which is in sorted part of documents
+            {
+                for (int indexOfCurrentDocument = 0; indexOfCurrentDocument < docsCount - indexOfLastDocumentInSortedPart - 1; indexOfCurrentDocument++)
+                {
+                    int indexOfNextDocument = indexOfCurrentDocument + 1;
+                    DateTime currentEntryDate = DateTime.Parse(documents[indexOfCurrentDocument].EntryDate);
+                    DateTime nextEntryDate = DateTime.Parse(documents[indexOfNextDocument].EntryDate);
+                    if (currentEntryDate.CompareTo(nextEntryDate) > 0)
+                    {
+                        var docCopy = documents[indexOfCurrentDocument];
+                        documents[indexOfCurrentDocument] = documents[indexOfNextDocument];
+                        documents[indexOfNextDocument] = docCopy;
+                    }
+                }
+            }
+            DocumentsListBox.Items.Refresh();
         }
     }
 }
