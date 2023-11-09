@@ -487,20 +487,27 @@ namespace SignalDocumentBaseManager
         {
             //bool sortingInAscendingOrder
 
-            int docsCount = documents.Count;
-            for (int indexOfLastDocumentInSortedPart = 0; indexOfLastDocumentInSortedPart < docsCount - 1; indexOfLastDocumentInSortedPart++)// indexOfLastDocumentInSortedPart is index of last document, which is in sorted part of documents
+            List<Document> outputList = new List<Document>();
+            foreach (Document item in DocumentsListBox.Items)
             {
-                for (int indexOfCurrentDocument = 0; indexOfCurrentDocument < docsCount - indexOfLastDocumentInSortedPart - 1; indexOfCurrentDocument++)
+                outputList.Add(item);
+            }
+
+            int outputListCount = outputList.Count;
+            for (int indexOfLastDocumentInSortedPart = 0; indexOfLastDocumentInSortedPart < outputListCount - 1; indexOfLastDocumentInSortedPart++)// indexOfLastDocumentInSortedPart is index of last document, which is in sorted part of outputList
+            {
+                for (int indexOfCurrentDocument = 0; indexOfCurrentDocument < outputListCount - indexOfLastDocumentInSortedPart - 1; indexOfCurrentDocument++)
                 {
                     int indexOfNextDocument = indexOfCurrentDocument + 1;
-                    if (documents[indexOfCurrentDocument].Type.CompareTo(documents[indexOfNextDocument].Type) > 0)
+                    if (outputList[indexOfCurrentDocument].Type.CompareTo(outputList[indexOfNextDocument].Type) > 0)
                     {
-                        var docCopy = documents[indexOfCurrentDocument];                        
-                        documents[indexOfCurrentDocument] = documents[indexOfNextDocument];
-                        documents[indexOfNextDocument] = docCopy;
+                        var docCopy = outputList[indexOfCurrentDocument];
+                        outputList[indexOfCurrentDocument] = outputList[indexOfNextDocument];
+                        outputList[indexOfNextDocument] = docCopy;
                     }
                 }
             }
+            DocumentsListBox.ItemsSource = outputList;
             DocumentsListBox.Items.Refresh();
         }
 
@@ -516,43 +523,60 @@ namespace SignalDocumentBaseManager
 
         private void SortByReleaseDate_Click(object sender, RoutedEventArgs e)
         {
-            int docsCount = documents.Count;
-            for (int indexOfLastDocumentInSortedPart = 0; indexOfLastDocumentInSortedPart < docsCount - 1; indexOfLastDocumentInSortedPart++)// indexOfLastDocumentInSortedPart is index of last document, which is in sorted part of documents
+            List<Document> outputList = new List<Document>();
+
+            foreach (Document item in DocumentsListBox.Items)
             {
-                for (int indexOfCurrentDocument = 0; indexOfCurrentDocument < docsCount - indexOfLastDocumentInSortedPart - 1; indexOfCurrentDocument++)
+                outputList.Add(item);
+            }
+
+            int outputListCount = outputList.Count;
+            for (int indexOfLastDocumentInSortedPart = 0; indexOfLastDocumentInSortedPart < outputListCount - 1; indexOfLastDocumentInSortedPart++)// indexOfLastDocumentInSortedPart is index of last document, which is in sorted part of outputList
+            {
+                for (int indexOfCurrentDocument = 0; indexOfCurrentDocument < outputListCount - indexOfLastDocumentInSortedPart - 1; indexOfCurrentDocument++)
                 {
                     int indexOfNextDocument = indexOfCurrentDocument + 1;
-                    DateTime currentReleaseDate = DateTime.Parse(documents[indexOfCurrentDocument].ReleaseDate);
-                    DateTime nextReleaseDate = DateTime.Parse(documents[indexOfNextDocument].ReleaseDate);
+                    DateTime currentReleaseDate = DateTime.Parse(outputList[indexOfCurrentDocument].ReleaseDate);
+                    DateTime nextReleaseDate = DateTime.Parse(outputList[indexOfNextDocument].ReleaseDate);
                     if (currentReleaseDate.CompareTo(nextReleaseDate) > 0)
                     {
-                        var docCopy = documents[indexOfCurrentDocument];
-                        documents[indexOfCurrentDocument] = documents[indexOfNextDocument];
-                        documents[indexOfNextDocument] = docCopy;
+                        var docCopy = outputList[indexOfCurrentDocument];
+                        outputList[indexOfCurrentDocument] = outputList[indexOfNextDocument];
+                        outputList[indexOfNextDocument] = docCopy;
                     }
                 }
             }
+            DocumentsListBox.ItemsSource = outputList;
             DocumentsListBox.Items.Refresh();
         }
 
         private void SortByEntryDate_Click(object sender, RoutedEventArgs e)
         {
-            int docsCount = documents.Count;
-            for (int indexOfLastDocumentInSortedPart = 0; indexOfLastDocumentInSortedPart < docsCount - 1; indexOfLastDocumentInSortedPart++)// indexOfLastDocumentInSortedPart is index of last document, which is in sorted part of documents
+            List<Document> outputList = new List<Document>();
+
+            foreach (Document item in DocumentsListBox.Items)
             {
-                for (int indexOfCurrentDocument = 0; indexOfCurrentDocument < docsCount - indexOfLastDocumentInSortedPart - 1; indexOfCurrentDocument++)
+                outputList.Add(item);
+            }
+
+            int outputListCount = outputList.Count;
+
+            for (int indexOfLastDocumentInSortedPart = 0; indexOfLastDocumentInSortedPart < outputListCount - 1; indexOfLastDocumentInSortedPart++)// indexOfLastDocumentInSortedPart is index of last document, which is in sorted part of outputList
+            {
+                for (int indexOfCurrentDocument = 0; indexOfCurrentDocument < outputListCount - indexOfLastDocumentInSortedPart - 1; indexOfCurrentDocument++)
                 {
                     int indexOfNextDocument = indexOfCurrentDocument + 1;
-                    DateTime currentEntryDate = DateTime.Parse(documents[indexOfCurrentDocument].EntryDate);
-                    DateTime nextEntryDate = DateTime.Parse(documents[indexOfNextDocument].EntryDate);
+                    DateTime currentEntryDate = DateTime.Parse(outputList[indexOfCurrentDocument].EntryDate);
+                    DateTime nextEntryDate = DateTime.Parse(outputList[indexOfNextDocument].EntryDate);
                     if (currentEntryDate.CompareTo(nextEntryDate) > 0)
                     {
-                        var docCopy = documents[indexOfCurrentDocument];
-                        documents[indexOfCurrentDocument] = documents[indexOfNextDocument];
-                        documents[indexOfNextDocument] = docCopy;
+                        var docCopy = outputList[indexOfCurrentDocument];
+                        outputList[indexOfCurrentDocument] = outputList[indexOfNextDocument];
+                        outputList[indexOfNextDocument] = docCopy;
                     }
                 }
             }
+            DocumentsListBox.ItemsSource = outputList;
             DocumentsListBox.Items.Refresh();
         }
     }
