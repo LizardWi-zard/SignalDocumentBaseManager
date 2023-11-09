@@ -154,6 +154,7 @@
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center" >
 
+                        <ComboBoxItem>Нет</ComboBoxItem>
                         <ComboBoxItem>Тип</ComboBoxItem>
                         <ComboBoxItem>Название</ComboBoxItem>
                         <ComboBoxItem>Номер</ComboBoxItem>
@@ -232,7 +233,7 @@
                                       SelectedIndex="0"
                                       ItemsSource="{Binding Mode=OneWay}"
                                       HorizontalAlignment="Left"
-                                      SelectionChanged="TypeFilter_SelectionChanged">
+                                      SelectionChanged="ApplyFilters_FiltersChanged">
 
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -255,7 +256,7 @@
                                         FontSize="18"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
-                                        SelectedDateChanged="DateFromFilter_SelectedDateChanged"/>
+                                        SelectedDateChanged="ApplyFilters_FiltersChanged"/>
 
 
                         <TextBlock Grid.Column="5"
@@ -272,7 +273,7 @@
                                         FontSize="18"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
-                                        SelectedDateChanged="DateBeforeFilter_SelectedDateChanged"/>
+                                        SelectedDateChanged="ApplyFilters_FiltersChanged"/>
 
                         <Button Grid.Column="7"
                                     Content="Сброс фильтров"
