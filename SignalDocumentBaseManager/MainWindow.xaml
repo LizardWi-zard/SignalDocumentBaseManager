@@ -390,9 +390,10 @@
             <Grid x:Name="DocumentDataInput" Visibility="Collapsed">
                 <Grid Background="#020202" Opacity="0.5"/>
                 <Border MinWidth="250"
-                            Background="#F7F0FA"
-                            BorderBrush="#FF4E4187" 
-                            BorderThickness="2"  
+                            Background="White"
+                            BorderBrush="Black"
+                            CornerRadius="8"
+                            BorderThickness="1"  
                             HorizontalAlignment="Center" 
                             VerticalAlignment="Center" 
                             Height="320" 
@@ -443,56 +444,57 @@
                         </ComboBox>
 
                         <TextBlock Grid.Column="1" 
-                                       Grid.Row="2" 
-                                       Margin="0,0,304,0"
-                                       Text="Введите имя документа"
-                                       TextWrapping="Wrap"/>
+                                   Grid.Row="2" 
+                                   Margin="0,0,304,0"
+                                   Text="Введите имя документа"
+                                   TextWrapping="Wrap"/>
                         <TextBox Name="DocumentName_textbox" 
-                                     Grid.Column="1" 
-                                     Grid.Row="2" 
-                                     Margin="108,0,0,10"/>
+                                 Grid.Column="1" 
+                                 Grid.Row="2" 
+                                 Margin="108,0,0,10"/>
 
                         <TextBlock Grid.Column="1"
-                                       Grid.Row="3"
-                                       Margin="0,0,304,10"
-                                       TextWrapping="Wrap"
-                                       Text="Введите номер документа"/>
+                                   Grid.Row="3"
+                                   Margin="0,0,304,10"
+                                   TextWrapping="Wrap"
+                                   Text="Введите номер документа"/>
                         <TextBox Name="DocumentNumber_textbox" 
-                                     Grid.Column="1"
-                                     Grid.Row="3" 
-                                     Margin="108,0,0,10"/>
+                                 Grid.Column="1"
+                                 Grid.Row="3" 
+                                 Margin="108,0,0,10"/>
 
                         <TextBlock Grid.Column="1"
-                                       Grid.Row="4" 
-                                       Margin="0,0,304,10"
-                                       Text="Введите дату публикации"
-                                       TextWrapping="Wrap"/>
-                        <TextBox Name="DocumentReleaseDate_textbox"
-                                     Grid.Column="1"
-                                     Grid.Row="4" 
-                                     Margin="108,0,0,10"/>
+                                   Grid.Row="4" 
+                                   Margin="0,0,304,10"
+                                   Text="Введите дату публикации"
+                                   TextWrapping="Wrap"/>
+                        <DatePicker Name="DocumentReleaseDate_textbox"
+                                    Grid.Column="1"
+                                    Grid.Row="4" 
+                                    Margin="108,0,0,10"/>
 
                         <TextBlock Grid.Column="1"
-                                       Grid.Row="5" 
-                                       Margin="0,0,290,0"
-                                       Text="Введите дату ввода в эксплотацию"
-                                       TextWrapping="Wrap"/>
-                        <TextBox Name="DocumentEntryDate_textbox"
-                                     Grid.Column="1"
-                                     Grid.Row="5" 
-                                     Margin="108,0,0,10"/>
+                                   Grid.Row="5" 
+                                   Margin="0,0,290,0"
+                                   Text="Введите дату ввода в эксплотацию"
+                                   TextWrapping="Wrap"/>
+                        <DatePicker Name="DocumentEntryDate_textbox"
+                                    Grid.Column="1"
+                                    Grid.Row="5" 
+                                    Margin="108,0,0,10"/>
 
                         <TextBlock Grid.Column="1"
-                                       Grid.Row="6" 
-                                       Margin="0,0,290,0"
-                                       Text="Введите ключевые слова"
-                                       TextWrapping="Wrap"/>
-                        <TextBox Name="DocumentKeyWords_textbox" Grid.Column="1"
-                                     Grid.Row="6" 
-                                     Margin="108,0,0,10"/>
+                                   Grid.Row="6" 
+                                   Margin="0,0,290,0"
+                                   Text="Введите ключевые слова"
+                                   TextWrapping="Wrap"/>
+                        <TextBox Name="DocumentKeyWords_textbox" 
+                                 Grid.Column="1"
+                                 Grid.Row="6" 
+                                 Margin="108,0,0,10"/>
 
                         <Grid Grid.Column="1"
-                                  Grid.Row="7">
+                              Grid.Row="7">
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
@@ -500,16 +502,19 @@
                             </Grid.ColumnDefinitions>
 
                             <Button Margin="5" 
-                                        Content="Back" 
-                                        Click="GoBack_Click"
-                                        Background="#F7F0FA"
-                                        Grid.Column="0"/>
+                                    Click="GoBack_Click"
+                                    Content="Назад" 
+                                    Style="{DynamicResource RoundedButton}"
+                                    Background="#FFFFD301"
+                                    Grid.Column="0"/>
+
 
                             <Button Margin="5" 
-                                        Content="Apply"  
-                                        Background="#F7F0FA"
-                                        Click="ApplyData_Click"
-                                        Grid.Column="1"/>
+                                    Content="Создать"  
+                                    Style="{DynamicResource RoundedButton}"
+                                    Background="#FFFFD301"
+                                    Click="ApplyData_Click"
+                                    Grid.Column="1"/>
                         </Grid>
                     </Grid>
                 </Border>
