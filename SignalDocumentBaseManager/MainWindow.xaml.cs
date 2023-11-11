@@ -81,7 +81,7 @@ namespace SignalDocumentBaseManager
             //documents = GetDocumentsAsync().Result.ToList();
 
 
-           // documents = JsonConvert.DeserializeObject<List<Document>>(data);
+            // documents = JsonConvert.DeserializeObject<List<Document>>(data);
 
             var input = searchBox.Text.ToLower();
 
@@ -92,7 +92,7 @@ namespace SignalDocumentBaseManager
             DocumentsListBox.ItemsSource = searchResult;
             DocumentsListBox.Items.Refresh();
         }
-             
+
         private List<Document> SearchAtDataBase(string input, List<Document> documents)
         {
             List<Document> searchResult = new List<Document>();
@@ -159,7 +159,7 @@ namespace SignalDocumentBaseManager
                     }
                     break;
                 default:
-                    
+
                     searchResult = documents.Where(document =>
                     document.Id.ToString().ToLower().Contains(input) ||
                     document.Type.ToLower().Contains(input) ||
@@ -235,14 +235,23 @@ namespace SignalDocumentBaseManager
 
             DateTime date = DateTime.Now;
 
-            bool isName = newDocument.Name.All(symbol => Char.IsLetter(symbol) || Char.IsPunctuation(symbol) || 
+            bool isName = newDocument.Name.All(symbol => Char.IsLetter(symbol) || Char.IsPunctuation(symbol) ||
                                                          Char.IsSeparator(symbol)) && newDocument.Name.Length > 0;
-            bool isNumber = newDocument.Number.All(symbol => (symbol >= '0' && symbol <= '9') ||(symbol == '.') || 
+            bool isNumber = newDocument.Number.All(symbol => (symbol >= '0' && symbol <= '9') ||(symbol == '.') ||
                                                              (symbol == '/') || (symbol == '-')) && newDocument.Number.Length > 0;
-            bool isReleaseDate = DateTime.TryParse(newDocument.ReleaseDate, out date) && newDocument.ReleaseDate.Length > 0;
-            bool isEntryDate = DateTime.TryParse(newDocument.EntryDate, out date) && newDocument.EntryDate.Length > 0;
 
-            if (isName && isNumber && isReleaseDate && isEntryDate)
+            bool isReleaseDateLowerThanEntryDate;
+
+            if (!String.IsNullOrEmpty(newDocument.EntryDate) && !String.IsNullOrEmpty(newDocument.ReleaseDate))
+            {
+                isReleaseDateLowerThanEntryDate = DateTime.Parse(newDocument.EntryDate) > DateTime.Parse(newDocument.ReleaseDate);
+            }
+            else
+            {
+                isReleaseDateLowerThanEntryDate = false;
+            }
+
+            if (isName && isNumber && isReleaseDateLowerThanEntryDate)
             {
                 try
                 {
@@ -309,7 +318,7 @@ namespace SignalDocumentBaseManager
         {
             Random r = new Random();
             int user_level_access = currentUser != null ? currentUser.AccessLevel : 3;
-  
+
             var lst = documents;
 
             switch (user_level_access)
