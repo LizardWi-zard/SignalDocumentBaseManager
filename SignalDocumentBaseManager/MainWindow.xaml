@@ -283,6 +283,7 @@
                                 HorizontalAlignment="Left"/>
 
                     </Grid>
+                    <Button Content="Button" HorizontalAlignment="Left" Height="24" Margin="42,6,0,0" Grid.Row="1" VerticalAlignment="Top" Width="63" Click="GetExcel"/>
 
                 </Grid>
 
