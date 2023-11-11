@@ -513,12 +513,92 @@ namespace SignalDocumentBaseManager
 
         private void SortByName_Click(object sender, RoutedEventArgs e)
         {
+            List<Document> outputList = new List<Document>();
+            foreach (Document item in DocumentsListBox.Items)
+            {
+                outputList.Add(item);
+            }
 
+            int outputListCount = outputList.Count;
+            for (int indexOfLastDocumentInSortedPart = 0; indexOfLastDocumentInSortedPart < outputListCount - 1; indexOfLastDocumentInSortedPart++)// indexOfLastDocumentInSortedPart is index of last document, which is in sorted part of outputList
+            {
+                for (int indexOfCurrentDocument = 0; indexOfCurrentDocument < outputListCount - indexOfLastDocumentInSortedPart - 1; indexOfCurrentDocument++)
+                {
+                    int indexOfNextDocument = indexOfCurrentDocument + 1;
+                    if (outputList[indexOfCurrentDocument].Name.CompareTo(outputList[indexOfNextDocument].Name) > 0)
+                    {
+                        var docCopy = outputList[indexOfCurrentDocument];
+                        outputList[indexOfCurrentDocument] = outputList[indexOfNextDocument];
+                        outputList[indexOfNextDocument] = docCopy;
+                    }
+                }
+            }
+            DocumentsListBox.ItemsSource = outputList;
+            DocumentsListBox.Items.Refresh();
         }
 
         private void SortByNumber_Click(object sender, RoutedEventArgs e)
         {
+            List<Document> outputList = new List<Document>();
+            foreach(Document item in DocumentsListBox.Items)
+            {
+                if (!(item.Number.Contains('.') || item.Number.Contains('-')))
+                {
+                    outputList.Add(item);      
+                }
+            }
 
+            int outputListCount = outputList.Count;
+
+            for(int indexOfLastSortedDocument = 0; indexOfLastSortedDocument < outputListCount - 1; indexOfLastSortedDocument++)
+            {
+                for(int indexOfCurrentDocument = 0; indexOfCurrentDocument < outputListCount - indexOfLastSortedDocument - 1; indexOfCurrentDocument++)
+                {
+                    int indexOfNextDocument = indexOfCurrentDocument + 1;
+                    var currentNumber = Convert.ToInt32(outputList[indexOfCurrentDocument].Number);
+                    var nextNumber = Convert.ToInt32(outputList[indexOfNextDocument].Number);
+                    if(currentNumber > nextNumber)
+                    {
+                        var copyOfCurrentDocument = outputList[indexOfCurrentDocument];
+                        outputList[indexOfCurrentDocument] = outputList[indexOfNextDocument];
+                        outputList[indexOfNextDocument] = copyOfCurrentDocument;
+                    }
+                }
+            }
+
+            List<Document> numbersWithSymbols = new List<Document>();
+            foreach (Document item in DocumentsListBox.Items)
+            {
+                if ((item.Number.Contains('.') || item.Number.Contains('-')))
+                {
+                    numbersWithSymbols.Add(item);
+                }
+            }
+
+            int numbersWithSymbolsCount = numbersWithSymbols.Count;
+
+            for (int indexOfLastSortedDocument = 0; indexOfLastSortedDocument < numbersWithSymbolsCount - 1; indexOfLastSortedDocument++)
+            {
+                for (int indexOfCurrentDocument = 0; indexOfCurrentDocument < numbersWithSymbolsCount - indexOfLastSortedDocument - 1; indexOfCurrentDocument++)
+                {
+                    int indexOfNextDocument = indexOfCurrentDocument + 1;
+                    var lengthOfCurrentNumber = numbersWithSymbols[indexOfCurrentDocument].Number.Length;
+                    var lengthOfNextNumber = numbersWithSymbols[indexOfNextDocument].Number.Length;
+                    if (lengthOfCurrentNumber > lengthOfNextNumber)
+                    {
+                        var copyOfCurrentNumber = numbersWithSymbols[indexOfCurrentDocument];
+                        numbersWithSymbols[indexOfCurrentDocument] = numbersWithSymbols[indexOfNextDocument];
+                        numbersWithSymbols[indexOfNextDocument] = copyOfCurrentNumber;
+                    }
+                }
+            }
+
+            foreach(Document number in  numbersWithSymbols)
+            {
+                outputList.Add(number);
+            }
+            DocumentsListBox.ItemsSource = outputList;
+            DocumentsListBox.Items.Refresh();
         }
 
         private void SortByReleaseDate_Click(object sender, RoutedEventArgs e)
