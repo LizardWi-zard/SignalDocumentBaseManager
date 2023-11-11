@@ -447,8 +447,8 @@ namespace SignalDocumentBaseManager
 
         private void SortByName_Click(object sender, RoutedEventArgs e)
         {
-            List<Document> outputList = new List<Document>();
-            foreach (Document item in DocumentsListBox.Items)
+            List<DocumentFile> outputList = new List<DocumentFile>();
+            foreach (DocumentFile item in DocumentsListBox.Items)
             {
                 outputList.Add(item);
             }
@@ -473,8 +473,8 @@ namespace SignalDocumentBaseManager
 
         private void SortByNumber_Click(object sender, RoutedEventArgs e)
         {
-            List<Document> outputList = new List<Document>();
-            foreach(Document item in DocumentsListBox.Items)
+            List<DocumentFile> outputList = new List<DocumentFile>();
+            foreach(DocumentFile item in DocumentsListBox.Items)
             {
                 if (!(item.Number.Contains('.') || item.Number.Contains('-')))
                 {
@@ -500,8 +500,8 @@ namespace SignalDocumentBaseManager
                 }
             }
 
-            List<Document> numbersWithSymbols = new List<Document>();
-            foreach (Document item in DocumentsListBox.Items)
+            List<DocumentFile> numbersWithSymbols = new List<DocumentFile>();
+            foreach (DocumentFile item in DocumentsListBox.Items)
             {
                 if ((item.Number.Contains('.') || item.Number.Contains('-')))
                 {
@@ -527,7 +527,7 @@ namespace SignalDocumentBaseManager
                 }
             }
 
-            foreach(Document number in  numbersWithSymbols)
+            foreach(var number in  numbersWithSymbols)
             {
                 outputList.Add(number);
             }
