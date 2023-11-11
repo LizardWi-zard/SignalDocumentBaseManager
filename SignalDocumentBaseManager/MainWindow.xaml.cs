@@ -2,24 +2,16 @@
 using SignalDocumentBaseManager.Classes;
 using System;
 using System.Collections.Generic;
-using System.DirectoryServices;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using static SignalDocumentBaseManager.Classes.DocumentSorter;
 
 namespace SignalDocumentBaseManager
 {
@@ -29,7 +21,7 @@ namespace SignalDocumentBaseManager
     public partial class MainWindow : Window
     {
         string searchFilter = "None";
-        List<Document> documents = new List<Document>();
+        List<DocumentFile> documents = new List<DocumentFile>();
         List<User> users = new List<User>();
         public List<string> DocumentTypes = new List<string>() {"None", "ГОСТ", "РД", "Указ", "СТО", "МИ", "РИ", "Приказ", "Уведомление", "Постановление правительства" };
 
@@ -65,7 +57,7 @@ namespace SignalDocumentBaseManager
             using (StreamReader r = new StreamReader("../../../Files/DocumentsJsonToParse.txt"))
             {
                 string json = r.ReadToEnd();
-                documents = JsonConvert.DeserializeObject<List<Document>>(json);
+                documents = JsonConvert.DeserializeObject<List<DocumentFile>>(json);
             }
 
             using (StreamReader r = new StreamReader("../../../Files/UsersJsonToParse.txt"))
@@ -93,9 +85,9 @@ namespace SignalDocumentBaseManager
             DocumentsListBox.Items.Refresh();
         }
 
-        private List<Document> SearchAtDataBase(string input, List<Document> documents)
+        private List<DocumentFile> SearchAtDataBase(string input, List<DocumentFile> documents)
         {
-            List<Document> searchResult = new List<Document>();
+            List<DocumentFile> searchResult = new List<DocumentFile>();
 
             switch (searchFilter)
             {
@@ -184,37 +176,18 @@ namespace SignalDocumentBaseManager
         {
             searchFilter = Filter_ComboBox.SelectedValue.ToString();
 
-            documents = GetDocumentsAsync().Result.ToList();
+            documents = DataBaseInteracter.GetDocumentsAsync().Result.ToList();
 
             var input = searchBox.Text.ToLower();
 
             SearchAtDataBase(input, documents);
         }
 
-        public class Document
-        {
-            public int Id { get; set; }
-
-            public string Type { get; set; }
-
-            public string Name { get; set; }
-
-            public string Number { get; set; }
-
-            public string ReleaseDate { get; set; }
-
-            public string EntryDate { get; set; }
-
-            public string KeyWords { get; set; }
-
-            public int AccessLevel { get; set; }
-        }
-
         private void ApplyData_Click(object sender, RoutedEventArgs e)
         {
             DocumentDataInput.Visibility = Visibility.Collapsed;
 
-            Document newDocument = new Document();
+            DocumentFile newDocument = new DocumentFile();
 
             newDocument.Id = documents.Count() + 1;
             newDocument.Type = DocumentType_Combobox.SelectedValue.ToString();
@@ -227,7 +200,7 @@ namespace SignalDocumentBaseManager
             ValidateDataAndSend(newDocument);
         }
 
-        private void ValidateDataAndSend(Document newDocument)
+        private void ValidateDataAndSend(DocumentFile newDocument)
         {
             // if 1930 < date < DateTime.Now
             // if Name.Length > 0 || name != null
@@ -255,7 +228,7 @@ namespace SignalDocumentBaseManager
             {
                 try
                 {
-                    PostDocumentsAsync(newDocument);
+                    DataBaseInteracter.PostDocumentsAsync(newDocument);
                 }
                 catch (Exception ex)
                 {
@@ -274,47 +247,13 @@ namespace SignalDocumentBaseManager
             DocumentDataInput.Visibility = Visibility.Collapsed;
         }
 
-        async Task<Document[]> GetDocumentsAsync()
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                var result = await client.GetAsync("https://localhost:7231/Documents").ConfigureAwait(false);
-
-                return await result.Content.ReadFromJsonAsync<Document[]>();
-            }
-        }
-
-        async Task PostDocumentsAsync(Document documentToPost)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                var json = JsonConvert.SerializeObject(documentToPost);
-
-                string param = $"json={json}";
-
-                var content = new StringContent(param, Encoding.UTF8, "application/json");
-
-                string ct = content.ToString();
-
-                try
-                {
-                    var result = await client.PostAsync("https://localhost:7231/Documents?" + param, content);
-
-                    result.EnsureSuccessStatusCode();
-                }
-                catch(Exception ex)
-                {
-                    MessageBox.Show("Exception heppend: " + ex);
-                }
-            }
-        }
-
+       
         private void DocumentsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
 
-        List<Document> CheckForAccess(List<Document> documents)
+        List<DocumentFile> CheckForAccess(List<DocumentFile> documents)
         {
             Random r = new Random();
             int user_level_access = currentUser != null ? currentUser.AccessLevel : 3;
@@ -409,7 +348,7 @@ namespace SignalDocumentBaseManager
             DocumentsListBox.Items.Refresh();
         }
 
-        void RefreshData(List<Document> lst)
+        void RefreshData(List<DocumentFile> lst)
         {
             var accessableDocuments = CheckForAccess(lst);
 
@@ -496,27 +435,13 @@ namespace SignalDocumentBaseManager
         {
             //bool sortingInAscendingOrder
 
-            List<Document> outputList = new List<Document>();
-            foreach (Document item in DocumentsListBox.Items)
+            List<DocumentFile> outputList = new List<DocumentFile>();
+            foreach (DocumentFile item in DocumentsListBox.Items)
             {
                 outputList.Add(item);
             }
 
-            int outputListCount = outputList.Count;
-            for (int indexOfLastDocumentInSortedPart = 0; indexOfLastDocumentInSortedPart < outputListCount - 1; indexOfLastDocumentInSortedPart++)// indexOfLastDocumentInSortedPart is index of last document, which is in sorted part of outputList
-            {
-                for (int indexOfCurrentDocument = 0; indexOfCurrentDocument < outputListCount - indexOfLastDocumentInSortedPart - 1; indexOfCurrentDocument++)
-                {
-                    int indexOfNextDocument = indexOfCurrentDocument + 1;
-                    if (outputList[indexOfCurrentDocument].Type.CompareTo(outputList[indexOfNextDocument].Type) > 0)
-                    {
-                        var docCopy = outputList[indexOfCurrentDocument];
-                        outputList[indexOfCurrentDocument] = outputList[indexOfNextDocument];
-                        outputList[indexOfNextDocument] = docCopy;
-                    }
-                }
-            }
-            DocumentsListBox.ItemsSource = outputList;
+            DocumentsListBox.ItemsSource = DocumentSorter.Sort(outputList, SortType.ByType); ;
             DocumentsListBox.Items.Refresh();
         }
 
@@ -612,60 +537,27 @@ namespace SignalDocumentBaseManager
 
         private void SortByReleaseDate_Click(object sender, RoutedEventArgs e)
         {
-            List<Document> outputList = new List<Document>();
+            List<DocumentFile> outputList = new List<DocumentFile>();
 
-            foreach (Document item in DocumentsListBox.Items)
+            foreach (DocumentFile item in DocumentsListBox.Items)
             {
                 outputList.Add(item);
             }
 
-            int outputListCount = outputList.Count;
-            for (int indexOfLastDocumentInSortedPart = 0; indexOfLastDocumentInSortedPart < outputListCount - 1; indexOfLastDocumentInSortedPart++)// indexOfLastDocumentInSortedPart is index of last document, which is in sorted part of outputList
-            {
-                for (int indexOfCurrentDocument = 0; indexOfCurrentDocument < outputListCount - indexOfLastDocumentInSortedPart - 1; indexOfCurrentDocument++)
-                {
-                    int indexOfNextDocument = indexOfCurrentDocument + 1;
-                    DateTime currentReleaseDate = DateTime.Parse(outputList[indexOfCurrentDocument].ReleaseDate);
-                    DateTime nextReleaseDate = DateTime.Parse(outputList[indexOfNextDocument].ReleaseDate);
-                    if (currentReleaseDate.CompareTo(nextReleaseDate) > 0)
-                    {
-                        var docCopy = outputList[indexOfCurrentDocument];
-                        outputList[indexOfCurrentDocument] = outputList[indexOfNextDocument];
-                        outputList[indexOfNextDocument] = docCopy;
-                    }
-                }
-            }
-            DocumentsListBox.ItemsSource = outputList;
+            DocumentsListBox.ItemsSource = DocumentSorter.Sort(outputList, SortType.ByRelease);
             DocumentsListBox.Items.Refresh();
         }
 
         private void SortByEntryDate_Click(object sender, RoutedEventArgs e)
         {
-            List<Document> outputList = new List<Document>();
+            List<DocumentFile> outputList = new List<DocumentFile>();
 
-            foreach (Document item in DocumentsListBox.Items)
+            foreach (DocumentFile item in DocumentsListBox.Items)
             {
                 outputList.Add(item);
             }
-
-            int outputListCount = outputList.Count;
-
-            for (int indexOfLastDocumentInSortedPart = 0; indexOfLastDocumentInSortedPart < outputListCount - 1; indexOfLastDocumentInSortedPart++)// indexOfLastDocumentInSortedPart is index of last document, which is in sorted part of outputList
-            {
-                for (int indexOfCurrentDocument = 0; indexOfCurrentDocument < outputListCount - indexOfLastDocumentInSortedPart - 1; indexOfCurrentDocument++)
-                {
-                    int indexOfNextDocument = indexOfCurrentDocument + 1;
-                    DateTime currentEntryDate = DateTime.Parse(outputList[indexOfCurrentDocument].EntryDate);
-                    DateTime nextEntryDate = DateTime.Parse(outputList[indexOfNextDocument].EntryDate);
-                    if (currentEntryDate.CompareTo(nextEntryDate) > 0)
-                    {
-                        var docCopy = outputList[indexOfCurrentDocument];
-                        outputList[indexOfCurrentDocument] = outputList[indexOfNextDocument];
-                        outputList[indexOfNextDocument] = docCopy;
-                    }
-                }
-            }
-            DocumentsListBox.ItemsSource = outputList;
+           
+            DocumentsListBox.ItemsSource = DocumentSorter.Sort(outputList, SortType.ByEntry);
             DocumentsListBox.Items.Refresh();
         }
     }
