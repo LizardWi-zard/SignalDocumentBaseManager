@@ -54,8 +54,6 @@ namespace SignalDocumentBaseManager.Classes
 
         private static List<DocumentFile> DateSort(List<DocumentFile> toSort, SortType type)
         {
-            toSort.Sort();
-
             int listCount = toSort.Count;
             
             DateTime currentDate = DateTime.Now;
