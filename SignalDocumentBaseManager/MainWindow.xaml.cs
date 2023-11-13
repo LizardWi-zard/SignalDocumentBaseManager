@@ -475,7 +475,7 @@ namespace SignalDocumentBaseManager
         private void SortByNumber_Click(object sender, RoutedEventArgs e)
         {
             List<DocumentFile> outputList = new List<DocumentFile>();
-            foreach (DocumentFile item in DocumentsListBox.Items)
+            foreach(DocumentFile item in DocumentsListBox.Items)
             {
                 if (!(item.Number.Contains('.') || item.Number.Contains('-')))
                 {
@@ -528,7 +528,7 @@ namespace SignalDocumentBaseManager
                 }
             }
 
-            foreach (var number in numbersWithSymbols)
+            foreach(var number in  numbersWithSymbols)
             {
                 outputList.Add(number);
             }
@@ -568,10 +568,7 @@ namespace SignalDocumentBaseManager
             WorksheetCollection excelSheets = excelFile.Worksheets;
             for (int sheetIndex = 0; sheetIndex < excelSheets.Count; sheetIndex++)
             {
-
                 Worksheet currentSheet = excelSheets[sheetIndex];
-
-                Console.WriteLine("Worksheet: " + currentSheet.Name);
 
                 int rows = currentSheet.Cells.MaxDataRow;
 
