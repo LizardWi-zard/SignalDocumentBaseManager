@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using static SignalDocumentBaseManager.Classes.DocumentSorter;
+using Aspose.Cells;
 
 namespace SignalDocumentBaseManager
 {
@@ -23,7 +24,7 @@ namespace SignalDocumentBaseManager
         string searchFilter = "None";
         List<DocumentFile> documents = new List<DocumentFile>();
         List<User> users = new List<User>();
-        public List<string> DocumentTypes = new List<string>() {"None", "ГОСТ", "РД", "Указ", "СТО", "МИ", "РИ", "Приказ", "Уведомление", "Постановление правительства" };
+        public List<string> DocumentTypes = new List<string>() { "None", "ГОСТ", "РД", "Указ", "СТО", "МИ", "РИ", "Приказ", "Уведомление", "Постановление правительства" };
 
         User currentUser = null;
 
@@ -210,7 +211,7 @@ namespace SignalDocumentBaseManager
 
             bool isName = newDocument.Name.All(symbol => Char.IsLetter(symbol) || Char.IsPunctuation(symbol) ||
                                                          Char.IsSeparator(symbol)) && newDocument.Name.Length > 0;
-            bool isNumber = newDocument.Number.All(symbol => (symbol >= '0' && symbol <= '9') ||(symbol == '.') ||
+            bool isNumber = newDocument.Number.All(symbol => (symbol >= '0' && symbol <= '9') || (symbol == '.') ||
                                                              (symbol == '/') || (symbol == '-')) && newDocument.Number.Length > 0;
 
             bool isReleaseDateLowerThanEntryDate;
@@ -247,7 +248,7 @@ namespace SignalDocumentBaseManager
             DocumentDataInput.Visibility = Visibility.Collapsed;
         }
 
-       
+
         private void DocumentsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
@@ -319,7 +320,7 @@ namespace SignalDocumentBaseManager
             {
                 currentUser = (User)users.FirstOrDefault(x => x.Login == login && x.Password == password) ?? null;
 
-                if(currentUser == null)
+                if (currentUser == null)
                 {
                     throw new NullReferenceException(); //UserNotFoundException
                 }
@@ -334,7 +335,7 @@ namespace SignalDocumentBaseManager
             {
                 MessageBox.Show("Пользователь не найден\nПопробуйте снова");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Ошибка: " + ex);
             }
@@ -382,11 +383,11 @@ namespace SignalDocumentBaseManager
 
                 MessageBox.Show("Аккаунт создан! \nДобро пожаловать, " + currentUser.Login);
             }
-            catch(ArgumentException ex)
+            catch (ArgumentException ex)
             {
                 MessageBox.Show("Ошибка в создании пользовател\n" + ex);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Ошибка! \nОшибка: " + ex);
             }
@@ -478,20 +479,20 @@ namespace SignalDocumentBaseManager
             {
                 if (!(item.Number.Contains('.') || item.Number.Contains('-')))
                 {
-                    outputList.Add(item);      
+                    outputList.Add(item);
                 }
             }
 
             int outputListCount = outputList.Count;
 
-            for(int indexOfLastSortedDocument = 0; indexOfLastSortedDocument < outputListCount - 1; indexOfLastSortedDocument++)
+            for (int indexOfLastSortedDocument = 0; indexOfLastSortedDocument < outputListCount - 1; indexOfLastSortedDocument++)
             {
-                for(int indexOfCurrentDocument = 0; indexOfCurrentDocument < outputListCount - indexOfLastSortedDocument - 1; indexOfCurrentDocument++)
+                for (int indexOfCurrentDocument = 0; indexOfCurrentDocument < outputListCount - indexOfLastSortedDocument - 1; indexOfCurrentDocument++)
                 {
                     int indexOfNextDocument = indexOfCurrentDocument + 1;
                     var currentNumber = Convert.ToInt32(outputList[indexOfCurrentDocument].Number);
                     var nextNumber = Convert.ToInt32(outputList[indexOfNextDocument].Number);
-                    if(currentNumber > nextNumber)
+                    if (currentNumber > nextNumber)
                     {
                         var copyOfCurrentDocument = outputList[indexOfCurrentDocument];
                         outputList[indexOfCurrentDocument] = outputList[indexOfNextDocument];
@@ -556,9 +557,35 @@ namespace SignalDocumentBaseManager
             {
                 outputList.Add(item);
             }
-           
+
             DocumentsListBox.ItemsSource = DocumentSorter.Sort(outputList, SortType.ByEntry);
             DocumentsListBox.Items.Refresh();
+        }
+
+        private void GetExcel_Click(object sender, RoutedEventArgs e)
+        {
+            Workbook excelFile = new Workbook("../../../Files/excel.xlsx");
+            WorksheetCollection excelSheets = excelFile.Worksheets;
+            for (int sheetIndex = 0; sheetIndex < excelSheets.Count; sheetIndex++)
+            {
+                Worksheet currentSheet = excelSheets[sheetIndex];
+
+                int rows = currentSheet.Cells.MaxDataRow;
+
+                for (int i = 0; i <= rows; i++)
+                {
+                    DocumentFile document = new DocumentFile();
+                    document.Id = (int)currentSheet.Cells[i, 0].Value;
+                    document.Type = currentSheet.Cells[i, 1].Value.ToString();
+                    document.Name = currentSheet.Cells[i, 2].Value.ToString();
+                    document.Number = currentSheet.Cells[i, 3].Value.ToString();
+                    document.ReleaseDate = currentSheet.Cells[i, 4].Value.ToString();
+                    document.EntryDate = currentSheet.Cells[i, 5].Value.ToString();
+                    document.KeyWords = currentSheet.Cells[i, 6].Value.ToString();
+                    document.AccessLevel = (int)currentSheet.Cells[i, 7].Value;
+                    documents.Add(document);
+                }
+            }
         }
     }
 }
