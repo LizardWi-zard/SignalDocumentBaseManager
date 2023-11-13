@@ -283,7 +283,17 @@
                                 HorizontalAlignment="Left"/>
 
                     </Grid>
-                    <Button Content="Button" HorizontalAlignment="Left" Height="24" Margin="42,6,0,0" Grid.Row="1" VerticalAlignment="Top" Width="63" Click="GetExcel"/>
+                    
+                    <Button Content="Из екселя" 
+                            Style="{DynamicResource RoundedButton}"
+                            Background="#FFFFD301"
+                            Height="24" 
+                            Width="70"
+                            Margin="0, 10,0,0" 
+                            Grid.Row="1" 
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top" 
+                            Click="GetExcel_Click"/>
 
                 </Grid>
 

@@ -561,38 +561,8 @@ namespace SignalDocumentBaseManager
             DocumentsListBox.ItemsSource = DocumentSorter.Sort(outputList, SortType.ByEntry);
             DocumentsListBox.Items.Refresh();
         }
-        private void ExcelParse(object sender, RoutedEventArgs e)
-        {
-            Workbook excelFile = new Workbook("Files/excel.xlsx");
-            WorksheetCollection excelSheets = excelFile.Worksheets;
-            for (int sheetIndex = 0; sheetIndex < excelSheets.Count; sheetIndex++)
-            {
 
-                Worksheet currentSheet = excelSheets[sheetIndex];
-
-                Console.WriteLine("Worksheet: " + currentSheet.Name);
-
-                int rows = currentSheet.Cells.MaxDataRow;
-                int cols = currentSheet.Cells.MaxDataColumn;
-
-                for (int i = 0; i <= rows; i++)
-                {
-                    {
-                        DocumentFile document = new DocumentFile();
-                        document.Id = (int)currentSheet.Cells[i, 0].Value;
-                        document.Type = (string)currentSheet.Cells[i, 1].Value;
-                        document.Name = (string)currentSheet.Cells[i, 2].Value;
-                        document.Number = (string)currentSheet.Cells[i, 3].Value;
-                        document.ReleaseDate = (string)currentSheet.Cells[i, 4].Value;
-                        document.EntryDate = (string)currentSheet.Cells[i, 5].Value;
-                        document.KeyWords = (string)currentSheet.Cells[i, 6].Value;
-                        document.AccessLevel = (int)currentSheet.Cells[i, 7].Value;
-                    }
-                }
-            }
-        }
-
-        private void GetExcel(object sender, RoutedEventArgs e)
+        private void GetExcel_Click(object sender, RoutedEventArgs e)
         {
             Workbook excelFile = new Workbook("../../../Files/excel.xlsx");
             WorksheetCollection excelSheets = excelFile.Worksheets;
@@ -607,18 +577,17 @@ namespace SignalDocumentBaseManager
 
                 for (int i = 0; i <= rows; i++)
                 {
-                        DocumentFile document = new DocumentFile();
-                        document.Id = (int)currentSheet.Cells[i, 0].Value;
-                        document.Type = currentSheet.Cells[i, 1].Value.ToString();
-                        document.Name = currentSheet.Cells[i, 2].Value.ToString();
-                        document.Number = currentSheet.Cells[i, 3].Value.ToString();
-                        document.ReleaseDate = currentSheet.Cells[i, 4].Value.ToString();
-                        document.EntryDate = currentSheet.Cells[i, 5].Value.ToString();
-                        document.KeyWords = currentSheet.Cells[i, 6].Value.ToString();
-                        document.AccessLevel = (int)currentSheet.Cells[i, 7].Value;
-                        documents.Add(document);
+                    DocumentFile document = new DocumentFile();
+                    document.Id = (int)currentSheet.Cells[i, 0].Value;
+                    document.Type = currentSheet.Cells[i, 1].Value.ToString();
+                    document.Name = currentSheet.Cells[i, 2].Value.ToString();
+                    document.Number = currentSheet.Cells[i, 3].Value.ToString();
+                    document.ReleaseDate = currentSheet.Cells[i, 4].Value.ToString();
+                    document.EntryDate = currentSheet.Cells[i, 5].Value.ToString();
+                    document.KeyWords = currentSheet.Cells[i, 6].Value.ToString();
+                    document.AccessLevel = (int)currentSheet.Cells[i, 7].Value;
+                    documents.Add(document);
                 }
-                
             }
         }
     }
