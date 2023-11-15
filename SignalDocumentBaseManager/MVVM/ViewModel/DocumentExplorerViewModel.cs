@@ -64,11 +64,13 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
         }
 
         public ICommand ButtonCommand { get; set; }
+        public ICommand ApplyDataCommand { get; set; }
 
         internal DocumentExplorerViewModel()
         {
             ButtonCommand = new RelayCommand(o => Search());
-
+            ApplyDataCommand = new RelayCommand(o => ApplyData());
+            
             LoadJson();
 
             OutputCollection = Documents;
@@ -169,9 +171,77 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
                     break;
             }
 
-            OutputCollection = searchResult;
-           
+            OutputCollection = searchResult;  
         }
 
+        public string NewDocumentType { get; set; }
+        public string NewDocumentName { get; set; }
+        public string NewDocumentNumber { get; set; }
+
+     //   private string
+        public DateTime NewDocumentReleaseDate { get; set; }
+        public DateTime NewDocumentEntryDate { get; set; }
+        public string NewDocumentKeyWords { get; set; }
+
+        private void ApplyData()
+        {
+            DocumentFile newDocument = new DocumentFile();
+
+            newDocument.Id = OutputCollection.Count() + 1;
+            newDocument.Type = NewDocumentType;
+            newDocument.Name = NewDocumentName;
+            newDocument.Number = NewDocumentNumber;
+            newDocument.ReleaseDate = NewDocumentReleaseDate.ToString();
+            newDocument.EntryDate = NewDocumentEntryDate.ToString();
+            newDocument.KeyWords = NewDocumentKeyWords;
+
+            ValidateDataAndSend(newDocument);
+        }
+
+        private void ValidateDataAndSend(DocumentFile newDocument)
+        {
+            // if 1930 < date < DateTime.Now
+            // if Name.Length > 0 || name != null
+            // if number != null
+
+            DateTime date = DateTime.Now;
+
+            bool isName = newDocument.Name.All(symbol => Char.IsLetter(symbol) || Char.IsPunctuation(symbol) ||
+                                                         Char.IsSeparator(symbol)) && newDocument.Name.Length > 0;
+            bool isNumber = newDocument.Number.All(symbol => (symbol >= '0' && symbol <= '9') || (symbol == '.') ||
+                                                             (symbol == '/') || (symbol == '-')) && newDocument.Number.Length > 0;
+
+            bool isReleaseDateLowerThanEntryDate;
+
+            if (!String.IsNullOrEmpty(newDocument.EntryDate) && !String.IsNullOrEmpty(newDocument.ReleaseDate))
+            {
+                isReleaseDateLowerThanEntryDate = DateTime.Parse(newDocument.EntryDate) > DateTime.Parse(newDocument.ReleaseDate);
+            }
+            else
+            {
+                isReleaseDateLowerThanEntryDate = false;
+            }
+
+            if (isName && isNumber && isReleaseDateLowerThanEntryDate)
+            {
+                try
+                {
+                    DataBaseInteracter.PostDocumentsAsync(newDocument);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("The exception happend: " + ex.ToString());
+                }
+                finally
+                {
+                    MessageBox.Show("Method done");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Некоторые поля не были заполнены или содержат недопустимые символы. Исправьте ошибки и попробуйте еще раз.");
+               // DocumentDataInput.Visibility = Visibility.Visible;
+            }
+        }
     }
 }

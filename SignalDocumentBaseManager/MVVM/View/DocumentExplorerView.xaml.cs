@@ -24,5 +24,15 @@ namespace SignalDocumentBaseManager.MVVM.View
         {
             InitializeComponent();
         }
+
+        private void AddDocument_Click(object sender, RoutedEventArgs e)
+        {
+            DocumentDataInput.Visibility = Visibility.Visible;
+        }
+
+        private void GoBack_Click(object sender, RoutedEventArgs e)
+        {
+            DocumentDataInput.Visibility = Visibility.Collapsed;
+        }
     }
 }
