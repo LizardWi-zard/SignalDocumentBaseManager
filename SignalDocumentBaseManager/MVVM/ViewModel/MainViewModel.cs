@@ -33,7 +33,7 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
             DocumentExplorerVM = new DocumentExplorerViewModel();
             SettingsVM = new SettingsViewModel();
 
-            CurrentView = SettingsVM;
+            CurrentView = DocumentExplorerVM;
 
             DocumentExplorerViewCommand = new RelayCommand(o =>
             {
