@@ -28,7 +28,7 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
 
         public ObservableCollection<string> SearchByColumOptions { get => _searchByColumOptions; }
 
-        public List<DocumentFile> Documents { get => _documents;}
+        public List<DocumentFile> Documents { get => _documents; }
 
         private List<DocumentFile> _outputCollection;
         public List<DocumentFile> OutputCollection
@@ -65,12 +65,14 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
 
         public ICommand ButtonCommand { get; set; }
         public ICommand ApplyDataCommand { get; set; }
+        public ICommand ApplyLoginDataCommand { get; set; }
 
         internal DocumentExplorerViewModel()
         {
             ButtonCommand = new RelayCommand(o => Search());
             ApplyDataCommand = new RelayCommand(o => ApplyData());
-            
+            ApplyLoginDataCommand = new RelayCommand(o => SetCurrentUser());
+
             LoadJson();
 
             OutputCollection = Documents;
@@ -171,14 +173,12 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
                     break;
             }
 
-            OutputCollection = searchResult;  
+            OutputCollection = searchResult;
         }
 
         public string NewDocumentType { get; set; }
         public string NewDocumentName { get; set; }
         public string NewDocumentNumber { get; set; }
-
-     //   private string
         public DateTime NewDocumentReleaseDate { get; set; }
         public DateTime NewDocumentEntryDate { get; set; }
         public string NewDocumentKeyWords { get; set; }
@@ -240,8 +240,71 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
             else
             {
                 MessageBox.Show("Некоторые поля не были заполнены или содержат недопустимые символы. Исправьте ошибки и попробуйте еще раз.");
-               // DocumentDataInput.Visibility = Visibility.Visible;
+                // DocumentDataInput.Visibility = Visibility.Visible;
             }
         }
+
+
+        public string LoginBoxInput { get; set; }
+        public string PasswordBoxInput { get; set; }
+
+        private void SetCurrentUser()
+        {
+            var login = LoginBoxInput;
+            var password = PasswordBoxInput;
+
+            try
+            {
+                currentUser = (User)_users.FirstOrDefault(x => x.Login == login && x.Password == password) ?? null;
+
+                if (currentUser == null)
+                {
+                    throw new NullReferenceException(); //UserNotFoundException
+                }
+
+                MessageBox.Show("Вход выполнен! \n Добро пожаловать, " + currentUser.Login);
+            }
+            catch (NullReferenceException ex)
+            {
+                MessageBox.Show("Пользователь не найден\nПопробуйте снова");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка: " + ex);
+            }
+        }
+
+        public string LoginCreationBoxInput { get; set; }
+        public string PasswordCreationBoxInput { get; set; }
+        public string PasswordConfirmBoxInput { get; set; }
+
+        private void CreateAccount()
+        {
+            // This method starts user account creation
+            string newLogin = LoginCreationBoxInput;
+            string newPassword = PasswordCreationBoxInput;
+            string newPasswordComfirmation = PasswordConfirmBoxInput;
+
+            try
+            {
+                if (String.IsNullOrEmpty(newPassword) && String.IsNullOrEmpty(newPasswordComfirmation) && newPassword == newPasswordComfirmation)
+                {
+                    User newUser = new User(newLogin, newPassword);
+                    currentUser = newUser;
+                   _users.Add(newUser);
+                }
+
+                MessageBox.Show("Аккаунт создан! \nДобро пожаловать, " + currentUser.Login);
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show("Ошибка в создании пользовател\n" + ex);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка! \nОшибка: " + ex);
+            }
+        }
+
     }
 }
