@@ -82,7 +82,6 @@ namespace SignalDocumentBaseManager.MVVM.View
 
             AutorizationWindow.Visibility = Visibility.Collapsed;
 
-            MessageBox.Show("Аккаунт создан! \nДобро пожаловать");
         }
 
         private void SetCurrentUser_Click(object sender, RoutedEventArgs e)

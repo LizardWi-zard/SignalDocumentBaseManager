@@ -66,12 +66,14 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
         public ICommand ButtonCommand { get; set; }
         public ICommand ApplyDataCommand { get; set; }
         public ICommand ApplyLoginDataCommand { get; set; }
+        public ICommand CreateAccountCommand {  get; set; }
 
         internal DocumentExplorerViewModel()
         {
             ButtonCommand = new RelayCommand(o => Search());
             ApplyDataCommand = new RelayCommand(o => ApplyData());
             ApplyLoginDataCommand = new RelayCommand(o => SetCurrentUser());
+            CreateAccountCommand = new RelayCommand(o => CreateAccount());
 
             LoadJson();
 
@@ -281,13 +283,16 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
         private void CreateAccount()
         {
             // This method starts user account creation
-            string newLogin = LoginCreationBoxInput;
-            string newPassword = PasswordCreationBoxInput;
-            string newPasswordComfirmation = PasswordConfirmBoxInput;
+            var newLogin = LoginCreationBoxInput;
+            var newPassword = PasswordCreationBoxInput;
+            var newPasswordComfirmation = PasswordConfirmBoxInput;
 
+            var stat1 = !String.IsNullOrEmpty(newPassword);
+            var stat2 = !String.IsNullOrEmpty(newPasswordComfirmation);
+            var stat3 = newPassword == newPasswordComfirmation;
             try
             {
-                if (String.IsNullOrEmpty(newPassword) && String.IsNullOrEmpty(newPasswordComfirmation) && newPassword == newPasswordComfirmation)
+                if (stat1 && stat2 && stat3)
                 {
                     User newUser = new User(newLogin, newPassword);
                     currentUser = newUser;
