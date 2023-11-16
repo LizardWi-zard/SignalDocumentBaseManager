@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 
 namespace SignalDocumentBaseManager.MVVM.View
 {
@@ -23,6 +24,10 @@ namespace SignalDocumentBaseManager.MVVM.View
         public DocumentExplorerView()
         {
             InitializeComponent();
+
+            TypeFilter_ComboBox.ItemsSource = new List<string>() {"None", "ГОСТ", "РД", "Указ", "СТО", "МИ", "РИ", "Приказ", "Уведомление", "Постановление правительства" };
+            DateFromFilter_DatePicker.SelectedDate = null;
+            DateBeforeFilter_DatePicker.SelectedDate = null;
         }
 
         private void AddDocument_Click(object sender, RoutedEventArgs e)

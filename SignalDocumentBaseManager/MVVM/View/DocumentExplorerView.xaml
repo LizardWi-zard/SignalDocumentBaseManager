@@ -82,10 +82,91 @@
                             Click="ShowAutorizationWindow_Click" 
                             Margin="70,0,0,0"/>
 
-                    
+                    <Grid Grid.Column="1"
+                          Grid.Row="1"
+                          Margin="10, 0, 0, 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition  Width="1*" MinWidth="80"/>
+                            <ColumnDefinition  Width="2*" MinWidth="70"/>
+                            <ColumnDefinition  Width="1*" MinWidth="70"/>
+                            <ColumnDefinition  Width="3*" MinWidth="120"/>
+                            <ColumnDefinition  Width="3*" MinWidth="180"/>
+                            <ColumnDefinition  Width="3*" MinWidth="120"/>
+                            <ColumnDefinition  Width="3*" MinWidth="180"/>
+                            <ColumnDefinition  Width="2*" MinWidth="100"/>
+                        </Grid.ColumnDefinitions>
 
-                    
+                        <TextBlock Grid.Column="0"
+                                   Text="Фильтры"
+                                   TextAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"
+                                   FontSize="16"/>
 
+                        <TextBlock Grid.Column="1"
+                                   Text="По типу"
+                                   TextAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Right"
+                                   FontSize="16"
+                                   Margin="0,0,10,0"/>
+
+                        <ComboBox Name ="TypeFilter_ComboBox" Grid.Column="2"
+                                  Height="22"
+                                  Width="70"
+                                  SelectedIndex="0"
+                                  ItemsSource="{Binding Mode=OneWay}"
+                                  SelectedItem="{Binding TypeFilter, Mode=TwoWay}"
+                                  HorizontalAlignment="Left">
+
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding }"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Grid.Column="3"
+                                   Text="Документы от:"
+                                   TextAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Right"
+                                   FontSize="16"/>
+
+                        <DatePicker Name="DateFromFilter_DatePicker" 
+                                    Grid.Column="4"
+                                    SelectedDateFormat="Long"
+                                    BorderBrush="Transparent"
+                                    FontSize="18"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    SelectedDate="{Binding DateFromFilter, Mode=TwoWay}"/>
+
+
+                        <TextBlock Grid.Column="5"
+                                   Text="Документы до:"
+                                   TextAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Right"
+                                   FontSize="16"/>
+
+                        <DatePicker Name="DateBeforeFilter_DatePicker" 
+                                    Grid.Column="6"
+                                    SelectedDateFormat="Long"
+                                    BorderBrush="Transparent"
+                                    FontSize="18"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    SelectedDate="{Binding DateBeforeFilter, Mode=TwoWay}"/>
+
+                        <Button Grid.Column="7"
+                                Content="Сброс фильтров"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                HorizontalAlignment="Left"
+                                Command="{Binding ResetFiltersCommand}"/>
+
+                    </Grid>
                 </Grid>
                 
                 <Grid Margin="0,80,10,0" >

@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.DirectoryServices;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -69,13 +70,15 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
         public ICommand ButtonCommand { get; set; }
         public ICommand ApplyDataCommand { get; set; }
         public ICommand ApplyLoginDataCommand { get; set; }
-        public ICommand CreateAccountCommand {  get; set; }
+        public ICommand CreateAccountCommand { get; set; }
 
-        public ICommand SortByTypeCommand { get; set; } //
+        public ICommand SortByTypeCommand { get; set; }
         public ICommand SortByNameCommand { get; set; }
         public ICommand SortByNumberCommand { get; set; }
-        public ICommand SortByReleaseDateCommand { get; set; } //
-        public ICommand SortByEntryDateCommand { get; set; } //
+        public ICommand SortByReleaseDateCommand { get; set; }
+        public ICommand SortByEntryDateCommand { get; set; }
+
+        public ICommand ResetFiltersCommand { get; set; }
 
         internal DocumentExplorerViewModel()
         {
@@ -90,6 +93,8 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
             SortByReleaseDateCommand = new RelayCommand(o => InitiateSort(SortType.ByRelease));
             SortByEntryDateCommand = new RelayCommand(o => InitiateSort(SortType.ByEntry));
 
+            ResetFiltersCommand = new RelayCommand(o => ResetFilters());
+
             LoadJson();
 
             OutputCollection = CheckForAccess(Documents);
@@ -97,7 +102,6 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
 
         private List<DocumentFile> CheckForAccess(List<DocumentFile> documents)
         {
-            Random r = new Random();
             int user_level_access = currentUser != null ? currentUser.AccessLevel : 3;
 
             var lst = documents;
@@ -134,9 +138,9 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
             }
         }
 
-        private void Search()
+        private List<DocumentFile> Search()
         {
-            var input = InputText.ToLower();
+            var input = !String.IsNullOrEmpty(InputText) ? InputText.ToLower() : "";
             List<DocumentFile> searchResult = new List<DocumentFile>();
 
             switch (SearchOption)
@@ -215,6 +219,8 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
             }
 
             OutputCollection = CheckForAccess(searchResult);
+
+            return OutputCollection;
         }
 
         public string NewDocumentType { get; set; }
@@ -337,7 +343,7 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
                 {
                     User newUser = new User(newLogin, newPassword);
                     currentUser = newUser;
-                   _users.Add(newUser);
+                    _users.Add(newUser);
                 }
 
                 MessageBox.Show("Аккаунт создан! \nДобро пожаловать, " + currentUser.Login);
@@ -355,6 +361,75 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
         void InitiateSort(SortType type)
         {
             OutputCollection = DocumentSorter.Sort(OutputCollection, type); ;
+        }
+
+        private string _typeFilter = "None";
+        public string TypeFilter
+        {
+            get { return _typeFilter; }
+            set
+            {
+                _typeFilter = value;
+                ApplyFilters();
+                RaisePropertyChanged(nameof(TypeFilter));
+            }
+        }
+
+        private DateTime _dateFromFilter = DateTime.MinValue; // должен быть равен самой ранней дате выхода любого документа
+        public DateTime DateFromFilter
+        {
+            get { return _dateFromFilter; }
+            set
+            {
+                _dateFromFilter = value;
+                ApplyFilters();
+                RaisePropertyChanged(nameof(DateFromFilter));
+            }
+        }
+
+        private DateTime _dateBeforeFilter = DateTime.MaxValue; // должен быть равен самой новой дате выхода любого документа
+        public DateTime DateBeforeFilter
+        {
+            get { return _dateBeforeFilter; }
+            set
+            {
+                _dateBeforeFilter = value;
+                ApplyFilters();
+                RaisePropertyChanged(nameof(DateBeforeFilter));
+            }
+        }
+
+        private void ApplyFilters()
+        {
+            var selectedItem = TypeFilter != null ? TypeFilter.ToLower() : "none";
+
+            var searchResult = Search();
+
+            if (selectedItem == "none")
+            {
+                searchResult = Documents;
+            }
+            else
+            {
+                searchResult = searchResult.Where(x => x.Type.ToLower().Contains(selectedItem)).ToList();
+            }
+
+            var dateFrom = (DateFromFilter == DateTime.MinValue) ? DateTime.MinValue : DateFromFilter;
+            var dateBefore = (DateBeforeFilter == DateTime.MaxValue) ? DateTime.MaxValue : DateBeforeFilter;
+
+            searchResult = searchResult.Where(x => DateTime.Parse(x.EntryDate) > dateFrom).ToList();
+            searchResult = searchResult.Where(x => DateTime.Parse(x.EntryDate) < dateBefore).ToList();
+
+            OutputCollection = CheckForAccess(searchResult);
+        }
+
+        private void ResetFilters()
+        {
+            TypeFilter = "None";
+
+            DateFromFilter = DateTime.MinValue;
+            DateBeforeFilter = DateTime.MaxValue;
+
         }
     }
 }
