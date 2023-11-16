@@ -105,28 +105,44 @@
                               Margin="10,0,5,10" >
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Width="40" DisplayMemberBinding="{Binding Path=Id}">
+                                <GridViewColumn Width="40" 
+                                                DisplayMemberBinding="{Binding Path=Id}">
                                     <GridViewColumnHeader Content="Id" />
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="200" DisplayMemberBinding="{Binding Path=Type}">
-                                    <GridViewColumnHeader Content="Тип" />
+                                <GridViewColumn Width="200" 
+                                                DisplayMemberBinding="{Binding Path=Type}">
+                                    <GridViewColumnHeader Content="Тип" 
+                                                          Command="{Binding SortByTypeCommand}"
+                                                          Click="RefreshList_Click"/>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="500" DisplayMemberBinding="{Binding Path=Name}">
-                                    <GridViewColumnHeader Content="Название" />
+                                <GridViewColumn Width="500" 
+                                                DisplayMemberBinding="{Binding Path=Name}">
+                                    <GridViewColumnHeader Content="Название" 
+                                                          Command="{Binding SortByNameCommand}"
+                                                          Click="RefreshList_Click"/>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="150" DisplayMemberBinding="{Binding Path=Number}">
-                                    <GridViewColumnHeader Content="Номер" />
+                                <GridViewColumn Width="150" 
+                                                DisplayMemberBinding="{Binding Path=Number}">
+                                    <GridViewColumnHeader Content="Номер"
+                                                          Command="{Binding SortByNumberCommand}"
+                                                          Click="RefreshList_Click"/>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="150" DisplayMemberBinding="{Binding Path=ReleaseDate}">
-                                    <GridViewColumnHeader Content="Дата выхода" />
+                                <GridViewColumn Width="150" 
+                                                DisplayMemberBinding="{Binding Path=ReleaseDate}">
+                                    <GridViewColumnHeader Content="Дата выхода" 
+                                                          Command="{Binding SortByReleaseDateCommand}"
+                                                          Click="RefreshList_Click"/>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="150" DisplayMemberBinding="{Binding Path=EntryDate}">
-                                    <GridViewColumnHeader Content="Дата ввода в действие" />
+                                <GridViewColumn Width="150" 
+                                                DisplayMemberBinding="{Binding Path=EntryDate}">
+                                    <GridViewColumnHeader Content="Дата ввода в действие" 
+                                                          Command="{Binding SortByEntryDateCommand}"
+                                                          Click="RefreshList_Click"/>
                                 </GridViewColumn>
                             </GridView>
                         </ListView.View>

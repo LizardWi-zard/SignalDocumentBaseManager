@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using static SignalDocumentBaseManager.Classes.DocumentSorter;
 
 namespace SignalDocumentBaseManager.MVVM.ViewModel
 {
@@ -70,12 +71,24 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
         public ICommand ApplyLoginDataCommand { get; set; }
         public ICommand CreateAccountCommand {  get; set; }
 
+        public ICommand SortByTypeCommand { get; set; } //
+        public ICommand SortByNameCommand { get; set; }
+        public ICommand SortByNumberCommand { get; set; }
+        public ICommand SortByReleaseDateCommand { get; set; } //
+        public ICommand SortByEntryDateCommand { get; set; } //
+
         internal DocumentExplorerViewModel()
         {
             ButtonCommand = new RelayCommand(o => Search());
             ApplyDataCommand = new RelayCommand(o => ApplyData());
             ApplyLoginDataCommand = new RelayCommand(o => SetCurrentUser());
             CreateAccountCommand = new RelayCommand(o => CreateAccount());
+
+            SortByTypeCommand = new RelayCommand(o => InitiateSort(SortType.ByType));
+            SortByNameCommand = new RelayCommand(o => InitiateSort(SortType.ByName));
+            SortByNumberCommand = new RelayCommand(o => InitiateSort(SortType.ByNumber));
+            SortByReleaseDateCommand = new RelayCommand(o => InitiateSort(SortType.ByRelease));
+            SortByEntryDateCommand = new RelayCommand(o => InitiateSort(SortType.ByEntry));
 
             LoadJson();
 
@@ -339,5 +352,9 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
             }
         }
 
+        void InitiateSort(SortType type)
+        {
+            OutputCollection = DocumentSorter.Sort(OutputCollection, type); ;
+        }
     }
 }

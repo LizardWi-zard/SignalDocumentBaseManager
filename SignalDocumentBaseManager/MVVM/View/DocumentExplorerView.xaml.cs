@@ -88,5 +88,10 @@ namespace SignalDocumentBaseManager.MVVM.View
         {
             AutorizationWindow.Visibility = Visibility.Collapsed;
         }
+
+        private void RefreshList_Click(object sender, RoutedEventArgs e)
+        {
+            DocumentsListBox.Items.Refresh();
+        }
     }
 }

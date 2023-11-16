@@ -11,36 +11,59 @@ namespace SignalDocumentBaseManager.Classes
     {
         public enum SortType
         {
-            ByRelease = 1,
+            ByName = 1,
+            ByType,
+            ByNumber,
+            ByRelease,
             ByEntry,
-            ByType
         }
 
         static public List<DocumentFile> Sort(List<DocumentFile> toSort, SortType type)
         {
             switch (type)   
             {
+                case SortType.ByName:
+                    return StringSort(toSort, type);
+
+                case SortType.ByType:
+                    return StringSort(toSort, type);
+
+                case SortType.ByNumber:
+                    return NumberSort(toSort);
+
                 case SortType.ByRelease:
                     return DateSort(toSort, type);
+
                 case SortType.ByEntry:
                     return DateSort(toSort, type);
-                case SortType.ByType:
-                    return TypeSort(toSort);
-                default:
-                    return null;
-            }
 
+                default:
+                    return toSort;
+            }
         }
 
-        private static List<DocumentFile> TypeSort(List<DocumentFile> toSort)
+        private static List<DocumentFile> StringSort(List<DocumentFile> toSort, SortType type)
         {
             int listCount = toSort.Count;
-            for (int lastSortedDocumen = 0; lastSortedDocumen < listCount - 1; lastSortedDocumen++)// indexOfLastDocumentInSortedPart is index of last document, which is in sorted part of outputList
+            bool needToChange = false;
+
+            for (int lastSortedDocument = 0; lastSortedDocument < listCount - 1; lastSortedDocument++)
             {
-                for (int currentDocument = 0; currentDocument < listCount - lastSortedDocumen - 1; currentDocument++)
+                for (int currentDocument = 0; currentDocument < listCount - lastSortedDocument - 1; currentDocument++)
                 {
                     int nextDocument = currentDocument + 1;
-                    if (toSort[currentDocument].Type.CompareTo(toSort[nextDocument].Type) > 0)
+
+                    switch (type)
+                    {
+                        case SortType.ByName:
+                            needToChange = (toSort[currentDocument].Name.CompareTo(toSort[nextDocument].Name) > 0);
+                            break;
+                        case SortType.ByType:
+                            needToChange = (toSort[currentDocument].Type.CompareTo(toSort[nextDocument].Type) > 0);
+                            break;
+                    }
+
+                    if (needToChange)
                     {
                         var docCopy = toSort[currentDocument];
                         toSort[currentDocument] = toSort[nextDocument];
@@ -59,9 +82,9 @@ namespace SignalDocumentBaseManager.Classes
             DateTime currentDate = DateTime.Now;
             DateTime nextDate = DateTime.Now;
 
-            for (int lastSortedDocumen = 0; lastSortedDocumen < listCount - 1; lastSortedDocumen++)
+            for (int lastSortedDocument = 0; lastSortedDocument < listCount - 1; lastSortedDocument++)
             {
-                for (int currentDocument = 0; currentDocument < listCount - lastSortedDocumen - 1; currentDocument++)
+                for (int currentDocument = 0; currentDocument < listCount - lastSortedDocument - 1; currentDocument++)
                 {
                     int nextDocument = currentDocument + 1;
 
@@ -87,6 +110,19 @@ namespace SignalDocumentBaseManager.Classes
             }
 
             return toSort;
+        }
+
+        private static List<DocumentFile> NumberSort(List<DocumentFile> toSort)
+        {
+            var outputList = toSort.Where(x => !(x.Number.Contains('.') || x.Number.Contains('-')));
+
+            outputList = outputList.OrderBy(x => Convert.ToInt32(x.Number));
+
+            var numbersWithSymbols = toSort.Where(x => (x.Number.Contains('.') || x.Number.Contains('-')));
+
+            numbersWithSymbols = numbersWithSymbols.OrderBy(x => x.Number.Length);   
+
+            return outputList.Concat(numbersWithSymbols).ToList();
         }
     }
 }
