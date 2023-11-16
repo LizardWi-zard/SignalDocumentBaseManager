@@ -343,7 +343,6 @@
                                   Grid.Row="1" 
                                   Margin="108,0,0,10"
                                   SelectedIndex="0"
-                                  ItemsSource="{Binding Mode=OneWay}"
                                   SelectedValue="{Binding NewDocumentType}">
 
                             <ComboBox.ItemTemplate>

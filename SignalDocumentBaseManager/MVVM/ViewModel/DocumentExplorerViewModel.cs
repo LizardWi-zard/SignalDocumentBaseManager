@@ -26,8 +26,6 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
 
         ObservableCollection<string> _searchByColumOptions = new ObservableCollection<string>() { "Нет", "Тип", "Название", "Номер", "Дата выхода", "Дата ввода в действие", "Ключевые слова" };
 
-        public List<string> DocumentTypes = new List<string>() { "None", "ГОСТ", "РД", "Указ", "СТО", "МИ", "РИ", "Приказ", "Уведомление", "Постановление правительства" };
-
         User currentUser = null;
 
         public ObservableCollection<string> SearchByColumOptions { get => _searchByColumOptions; }

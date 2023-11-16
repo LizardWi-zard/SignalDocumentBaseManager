@@ -15,7 +15,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height=" 30"/>
+            <RowDefinition Height="20"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -23,25 +23,28 @@
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="110"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <RadioButton Grid.Column="0" 
                          Width="90" 
                          Content="Главная"
-                         FontSize="20"
-                         Background="gray" 
+                         FontSize="16"
+                         Background="#F6F0F9" 
                          HorizontalAlignment="Left"
                          Command="{Binding DocumentExplorerViewCommand}"
                          IsChecked="True"/>
             <RadioButton Grid.Column="1" 
                          Content="Настройки"
-                         FontSize="20"
-                         Width="120" 
-                         Background="gray" 
+                         FontSize="16"
+                         Width="110" 
+                         Background="#F6F0F9" 
                          HorizontalAlignment="Right"
                          Command="{Binding SettingsViewCommand}"/>
+
+            <Canvas Background="#F6F0F9"
+                    Grid.Column="2"/>
 
         </Grid>
 

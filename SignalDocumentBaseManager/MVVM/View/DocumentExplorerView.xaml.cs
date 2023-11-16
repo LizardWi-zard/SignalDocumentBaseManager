@@ -21,11 +21,15 @@ namespace SignalDocumentBaseManager.MVVM.View
     /// </summary>
     public partial class DocumentExplorerView : UserControl
     {
+        public List<string> documentTypes = new List<string>() { "None", "ГОСТ", "РД", "Указ", "СТО", "МИ", "РИ", "Приказ", "Уведомление", "Постановление правительства" };
+
         public DocumentExplorerView()
         {
             InitializeComponent();
 
-            TypeFilter_ComboBox.ItemsSource = new List<string>() {"None", "ГОСТ", "РД", "Указ", "СТО", "МИ", "РИ", "Приказ", "Уведомление", "Постановление правительства" };
+            TypeFilter_ComboBox.ItemsSource = documentTypes;
+            DocumentType_Combobox.ItemsSource = documentTypes.Skip(1);
+
             DateFromFilter_DatePicker.SelectedDate = null;
             DateBeforeFilter_DatePicker.SelectedDate = null;
         }
