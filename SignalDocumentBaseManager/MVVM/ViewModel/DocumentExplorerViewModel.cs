@@ -21,7 +21,7 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
         List<DocumentFile> _documents = new List<DocumentFile>();
         List<User> _users = new List<User>();
 
-        ObservableCollection<string> _searchByColumOptions = new ObservableCollection<string>() { "Нет", "Тип", "Название", "Номер", "Дата выхода", "Дата ввода в действи", "Ключевые слова" };
+        ObservableCollection<string> _searchByColumOptions = new ObservableCollection<string>() { "Нет", "Тип", "Название", "Номер", "Дата выхода", "Дата ввода в действие", "Ключевые слова" };
 
         public List<string> DocumentTypes = new List<string>() { "None", "ГОСТ", "РД", "Указ", "СТО", "МИ", "РИ", "Приказ", "Уведомление", "Постановление правительства" };
 
@@ -51,6 +51,7 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
             {
                 //mrthod that saves value for later
                 _searchOption = value;
+                Search();
             }
         }
 
@@ -125,7 +126,7 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
             var input = InputText.ToLower();
             List<DocumentFile> searchResult = new List<DocumentFile>();
 
-            switch (searchFilter)
+            switch (SearchOption)
             {
                 case "Тип":
                     foreach (var document in _documents)

@@ -43,7 +43,7 @@
                               ItemsSource="{Binding SearchByColumOptions}"
                               SelectedItem="{Binding SearchOption}"
                               Grid.Column="2"
-                              Width="56"
+                              Width="60"
                               Height="22"
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center" >
