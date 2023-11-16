@@ -167,6 +167,16 @@
                                 Command="{Binding ResetFiltersCommand}"/>
 
                     </Grid>
+
+                    <Button Content="Из екселя" 
+                            Background="#FFFFD301"
+                            Height="24" 
+                            Width="70"
+                            Margin="0, 10,0,0" 
+                            Grid.Row="1" 
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Command="{Binding GetExcelCommand}"/>
                 </Grid>
                 
                 <Grid Margin="0,80,10,0" >

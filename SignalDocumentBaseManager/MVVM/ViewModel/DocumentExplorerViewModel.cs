@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Aspose.Cells;
+using Newtonsoft.Json;
 using SignalDocumentBaseManager.Classes;
 using SignalDocumentBaseManager.Core;
 using System;
@@ -79,6 +80,7 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
         public ICommand SortByEntryDateCommand { get; set; }
 
         public ICommand ResetFiltersCommand { get; set; }
+        public ICommand GetExcelCommand { get; set; }
 
         internal DocumentExplorerViewModel()
         {
@@ -94,6 +96,7 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
             SortByEntryDateCommand = new RelayCommand(o => InitiateSort(SortType.ByEntry));
 
             ResetFiltersCommand = new RelayCommand(o => ResetFilters());
+            GetExcelCommand = new RelayCommand(o => GetExcel());
 
             LoadJson();
 
@@ -429,7 +432,33 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
 
             DateFromFilter = DateTime.MinValue;
             DateBeforeFilter = DateTime.MaxValue;
+        }
 
+        private void GetExcel()
+        {
+            Workbook excelFile = new Workbook("../../../Files/excel.xlsx");
+            WorksheetCollection excelSheets = excelFile.Worksheets;
+
+            for (int sheetIndex = 0; sheetIndex < excelSheets.Count; sheetIndex++)
+            {
+                Worksheet currentSheet = excelSheets[sheetIndex];
+
+                int rows = currentSheet.Cells.MaxDataRow;
+
+                for (int i = 0; i <= rows; i++)
+                {
+                    DocumentFile document = new DocumentFile();
+                    document.Id = (int)currentSheet.Cells[i, 0].Value;
+                    document.Type = currentSheet.Cells[i, 1].Value.ToString();
+                    document.Name = currentSheet.Cells[i, 2].Value.ToString();
+                    document.Number = currentSheet.Cells[i, 3].Value.ToString();
+                    document.ReleaseDate = currentSheet.Cells[i, 4].Value.ToString();
+                    document.EntryDate = currentSheet.Cells[i, 5].Value.ToString();
+                    document.KeyWords = currentSheet.Cells[i, 6].Value.ToString();
+                    document.AccessLevel = (int)currentSheet.Cells[i, 7].Value;
+                    Documents.Add(document);
+                }
+            }
         }
     }
 }
