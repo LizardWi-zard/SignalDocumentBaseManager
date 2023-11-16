@@ -372,6 +372,7 @@
                                    TextWrapping="Wrap"
                                    TextAlignment="Center"/>
                         <TextBox Name="LoginEnter_textBox"
+                                 Text="{Binding LoginBoxInput}"
                                  Grid.Column="1" 
                                  Grid.Row="1" 
                                  Margin="5,35, 5, 0"
@@ -386,6 +387,7 @@
                                    TextWrapping="Wrap"           
                                    TextAlignment="Center"/>
                         <TextBox Name="PasswordEnter_textBox"
+                                 Text="{Binding PasswordBoxInput}"
                                  Grid.Column="1" 
                                  Grid.Row="2" 
                                  Margin="5, 35, 5, 0"
@@ -432,7 +434,7 @@
                 </Border>
             </Grid>
 
-            <Grid x:Name="RegistrationWindow" Visibility="Visible">
+            <Grid x:Name="RegistrationWindow" Visibility="Collapsed">
                 <Grid Background="#020202" Opacity="0.5"/>
                 <Border MinWidth="250"
                             Background="White"

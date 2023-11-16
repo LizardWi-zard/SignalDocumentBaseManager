@@ -4,6 +4,7 @@ using SignalDocumentBaseManager.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.DirectoryServices;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -77,8 +78,32 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
 
             LoadJson();
 
-            OutputCollection = Documents;
+            OutputCollection = CheckForAccess(Documents);
         }
+
+        private List<DocumentFile> CheckForAccess(List<DocumentFile> documents)
+        {
+            Random r = new Random();
+            int user_level_access = currentUser != null ? currentUser.AccessLevel : 3;
+
+            var lst = documents;
+
+            switch (user_level_access)
+            {
+                case 2:
+                    lst = documents.Where(x => (x.AccessLevel == 2 || x.AccessLevel == 3)).ToList();
+                    break;
+                case 3:
+                    lst = documents.Where(x => (x.AccessLevel == 3)).ToList();
+                    break;
+                default:
+                    lst = documents;
+                    break;
+            }
+
+            return lst;
+        }
+
 
         private void LoadJson()
         {
@@ -175,7 +200,7 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
                     break;
             }
 
-            OutputCollection = searchResult;
+            OutputCollection = CheckForAccess(searchResult);
         }
 
         public string NewDocumentType { get; set; }
@@ -274,6 +299,8 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
             {
                 MessageBox.Show("Ошибка: " + ex);
             }
+
+            OutputCollection = CheckForAccess(Documents);
         }
 
         public string LoginCreationBoxInput { get; set; }
