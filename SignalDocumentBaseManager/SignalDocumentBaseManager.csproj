@@ -20,4 +20,8 @@
     <Resource Include="SignalLogo.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MVVM\Model\" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,655 @@
+﻿<UserControl x:Class="SignalDocumentBaseManager.MVVM.View.DocumentExplorerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SignalDocumentBaseManager.MVVM.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="1300">
+    
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                   HorizontalScrollBarVisibility="Auto">
+        <Grid MinHeight="400" 
+                  MinWidth="1200">
+            <Grid>
+                <Grid Height="80"
+                          Background="White"
+                          VerticalAlignment="Top" 
+                          Margin="0,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition  Width="70"/>
+                        <ColumnDefinition Width="70" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+
+                    <TextBox Grid.Column="1"
+                             Text="{Binding InputText}"
+                             Name="searchBox" 
+                             Width="auto"
+                             Margin="10,0,10,0"
+                             Height="22"
+                             BorderThickness="2" 
+                             BorderBrush="#FFFFD301" 
+                             Padding="8,0,0,0"
+                             VerticalAlignment="Center"/>
+
+                    <ComboBox Name="Filter_ComboBox"
+                              ItemsSource="{Binding SearchByColumOptions}"
+                              SelectedItem="{Binding SearchOption}"
+                              Grid.Column="2"
+                              Width="60"
+                              Height="22"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center" >
+
+                    </ComboBox>
+
+                    <Button Grid.Column="3"
+                            Height="22"
+                            Width="50"
+                            Margin="0,0,15,0"
+                            Background="#FFFFD301"
+                            Content="Поиск"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Command="{Binding ButtonCommand}"/>
+
+                    <Button Grid.ColumnSpan="2"
+                            Grid.Column="2"
+                            Grid.Row="1"                        
+                            Height="22"
+                            Width="120"
+                            Margin="0,0,15,0"
+                            Background="#FFFFD301"
+                            Content="Добавить документ"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center" 
+                            Click="AddDocument_Click"/>
+
+                    <Button Grid.Column="0"                      
+                            Height="22"
+                            Width="70"
+                            Background="#FFFFD301"
+                            Content="Войти"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Click="ShowAutorizationWindow_Click" 
+                            Margin="70,0,0,0"/>
+
+                    <Grid Grid.Column="1"
+                          Grid.Row="1"
+                          Margin="10, 0, 0, 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition  Width="1*" MinWidth="80"/>
+                            <ColumnDefinition  Width="2*" MinWidth="70"/>
+                            <ColumnDefinition  Width="1*" MinWidth="70"/>
+                            <ColumnDefinition  Width="3*" MinWidth="120"/>
+                            <ColumnDefinition  Width="3*" MinWidth="180"/>
+                            <ColumnDefinition  Width="3*" MinWidth="120"/>
+                            <ColumnDefinition  Width="3*" MinWidth="180"/>
+                            <ColumnDefinition  Width="2*" MinWidth="100"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0"
+                                   Text="Фильтры"
+                                   TextAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"
+                                   FontSize="16"/>
+
+                        <TextBlock Grid.Column="1"
+                                   Text="По типу"
+                                   TextAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Right"
+                                   FontSize="16"
+                                   Margin="0,0,10,0"/>
+
+                        <ComboBox Name ="TypeFilter_ComboBox" Grid.Column="2"
+                                  Height="22"
+                                  Width="70"
+                                  SelectedIndex="0"
+                                  ItemsSource="{Binding Mode=OneWay}"
+                                  SelectedItem="{Binding TypeFilter, Mode=TwoWay}"
+                                  HorizontalAlignment="Left">
+
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding }"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Grid.Column="3"
+                                   Text="Документы от:"
+                                   TextAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Right"
+                                   FontSize="16"/>
+
+                        <DatePicker Name="DateFromFilter_DatePicker" 
+                                    Grid.Column="4"
+                                    SelectedDateFormat="Long"
+                                    BorderBrush="Transparent"
+                                    FontSize="18"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    SelectedDate="{Binding DateFromFilter, Mode=TwoWay}"/>
+
+
+                        <TextBlock Grid.Column="5"
+                                   Text="Документы до:"
+                                   TextAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Right"
+                                   FontSize="16"/>
+
+                        <DatePicker Name="DateBeforeFilter_DatePicker" 
+                                    Grid.Column="6"
+                                    SelectedDateFormat="Long"
+                                    BorderBrush="Transparent"
+                                    FontSize="18"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    SelectedDate="{Binding DateBeforeFilter, Mode=TwoWay}"/>
+
+                        <Button Grid.Column="7"
+                                Content="Сброс фильтров"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                HorizontalAlignment="Left"
+                                Command="{Binding ResetFiltersCommand}"/>
+
+                    </Grid>
+
+                    <Button Content="Из екселя" 
+                            Background="#FFFFD301"
+                            Height="24" 
+                            Width="70"
+                            Margin="0, 10,0,0" 
+                            Grid.Row="1" 
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Command="{Binding GetExcelCommand}"/>
+                </Grid>
+                
+                <Grid Margin="0,80,10,0" >
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="7*" />
+                        <RowDefinition Height="3*"/>
+                    </Grid.RowDefinitions>
+
+                    <ListView Name="DocumentsListBox"
+                              MinWidth="1200"
+                              MinHeight="250"                         
+                              Background="WhiteSmoke"
+                              ItemsSource="{Binding OutputCollection}" 
+                              Grid.RowSpan="3" 
+                              Margin="10,0,5,10" >
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="40" 
+                                                DisplayMemberBinding="{Binding Path=Id}">
+                                    <GridViewColumnHeader Content="Id" />
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="200" 
+                                                DisplayMemberBinding="{Binding Path=Type}">
+                                    <GridViewColumnHeader Content="Тип" 
+                                                          Command="{Binding SortByTypeCommand}"
+                                                          Click="RefreshList_Click"/>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="500" 
+                                                DisplayMemberBinding="{Binding Path=Name}">
+                                    <GridViewColumnHeader Content="Название" 
+                                                          Command="{Binding SortByNameCommand}"
+                                                          Click="RefreshList_Click"/>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="150" 
+                                                DisplayMemberBinding="{Binding Path=Number}">
+                                    <GridViewColumnHeader Content="Номер"
+                                                          Command="{Binding SortByNumberCommand}"
+                                                          Click="RefreshList_Click"/>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="150" 
+                                                DisplayMemberBinding="{Binding Path=ReleaseDate}">
+                                    <GridViewColumnHeader Content="Дата выхода" 
+                                                          Command="{Binding SortByReleaseDateCommand}"
+                                                          Click="RefreshList_Click"/>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="150" 
+                                                DisplayMemberBinding="{Binding Path=EntryDate}">
+                                    <GridViewColumnHeader Content="Дата ввода в действие" 
+                                                          Command="{Binding SortByEntryDateCommand}"
+                                                          Click="RefreshList_Click"/>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="10">
+                                    <Grid Width="auto" Background="#FFFFD301">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition  Width="40" />
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="500" />
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition Width="150" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock FontSize="18" 
+                                                       Text="{Binding Id}" 
+                                                       TextWrapping="Wrap"  
+                                                       HorizontalAlignment="Left" 
+                                                       Grid.Column="0" 
+                                                       TextAlignment="Center"/>
+
+                                        <TextBlock FontSize="18" 
+                                                       Text="{Binding Type}" 
+                                                       TextWrapping="Wrap"  
+                                                       HorizontalAlignment="Left" 
+                                                       Grid.Column="1"  />
+
+                                        <TextBlock FontSize="18" 
+                                                       Text="{Binding Name}" 
+                                                       TextWrapping="Wrap" 
+                                                       HorizontalAlignment="Left" 
+                                                       Grid.Column="2"  />
+
+                                        <TextBlock FontSize="18" 
+                                                       Text="{Binding Number}" 
+                                                       TextWrapping="Wrap"  
+                                                       HorizontalAlignment="Left" 
+                                                       Grid.Column="3"  />
+
+                                        <TextBlock FontSize="18" 
+                                                       Text="{Binding ReleaseDate}" 
+                                                       TextWrapping="Wrap"  
+                                                       HorizontalAlignment="Left" 
+                                                       Grid.Column="4"  />
+
+                                        <TextBlock FontSize="18" 
+                                                       Text="{Binding EntryDate}" 
+                                                       TextWrapping="Wrap"  
+                                                       HorizontalAlignment="Left" 
+                                                       Grid.Column="5"  />
+                                    </Grid>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </Grid>
+
+            <Grid x:Name="DocumentDataInput" Visibility="Collapsed">
+
+                <Grid Background="#020202" Opacity="0.5"/>
+                <Border MinWidth="250"
+                        Background="White"
+                        BorderBrush="Black"
+                        CornerRadius="8"
+                        BorderThickness="1"  
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center" 
+                        Height="320" 
+                        Width="442">
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="20"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition/>
+
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Column="1" 
+                                   Grid.Row="0"
+                                   Text="Создание нового документа"
+                                   HorizontalAlignment="Center"
+                                   TextWrapping="Wrap"/>
+
+                        <TextBlock Grid.Column="1" 
+                                   Grid.Row="1"
+                                   Margin="0,0,304,0"
+                                   Text="Введите тип документа"
+                                   TextWrapping="Wrap"/>
+                        <ComboBox Name="DocumentType_Combobox"
+                                  Grid.Column="1" 
+                                  Grid.Row="1" 
+                                  Margin="108,0,0,10"
+                                  SelectedIndex="0"
+                                  SelectedValue="{Binding NewDocumentType}">
+
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding }"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Grid.Column="1" 
+                                   Grid.Row="2" 
+                                   Margin="0,0,304,0"
+                                   Text="Введите имя документа"
+                                   TextWrapping="Wrap"/>
+                        <TextBox Name="DocumentName_textbox" 
+                                 Grid.Column="1" 
+                                 Grid.Row="2" 
+                                 Margin="108,0,0,10"
+                                 Text="{Binding NewDocumentName}"/>
+
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="3"
+                                   Margin="0,0,304,10"
+                                   TextWrapping="Wrap"
+                                   Text="Введите номер документа"/>
+                        <TextBox Name="DocumentNumber_textbox" 
+                                 Grid.Column="1"
+                                 Grid.Row="3" 
+                                 Margin="108,0,0,10"
+                                 Text="{Binding NewDocumentNumber}"/>
+
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="4" 
+                                   Margin="0,0,304,10"
+                                   Text="Введите дату публикации"
+                                   TextWrapping="Wrap"/>
+                        <DatePicker Name="DocumentReleaseDate_textbox"
+                                    Grid.Column="1"
+                                    Grid.Row="4" 
+                                    Margin="108,0,0,10"
+                                    SelectedDate="{Binding NewDocumentReleaseDate}"/>
+
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="5" 
+                                   Margin="0,0,290,0"
+                                   Text="Введите дату ввода в эксплотацию"
+                                   TextWrapping="Wrap"/>
+                        <DatePicker Name="DocumentEntryDate_textbox"
+                                    Grid.Column="1"
+                                    Grid.Row="5" 
+                                    Margin="108,0,0,10"
+                                    SelectedDate="{Binding NewDocumentEntryDate}"/>
+
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="6" 
+                                   Margin="0,0,290,0"
+                                   Text="Введите ключевые слова"
+                                   TextWrapping="Wrap"/>
+                        <TextBox Name="DocumentKeyWords_textbox" 
+                                 Grid.Column="1"
+                                 Grid.Row="6" 
+                                 Margin="108,0,0,10"
+                                 Text="{Binding NewDocumentKeyWords}"/>
+
+                        <Grid Grid.Column="1"
+                              Grid.Row="7">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Margin="5" 
+                                    Click="GoBack_Click"
+                                    Content="Назад" 
+                                    Background="#FFFFD301"
+                                    Grid.Column="0"/>
+
+
+                            <Button Margin="5" 
+                                    Content="Создать"  
+                                    Background="#FFFFD301"
+                                    Grid.Column="1"
+                                    Click="GoBack_Click"
+                                    Command="{Binding ApplyDataCommand}"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Grid x:Name="AutorizationWindow" Visibility="Collapsed">
+                <Grid Background="#020202" 
+                          Opacity="0.5"/>
+                <Border MinWidth="250"
+                            Background="White"
+                            BorderBrush="Black"
+                            CornerRadius="8"
+                            BorderThickness="1"  
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" 
+                            Height="250" 
+                            Width="200">
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="20"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Column="1" 
+                                   Grid.Row="0"
+                                   Margin="3"
+                                   Text="Авторизация"
+                                   FontSize="18"
+                                   HorizontalAlignment="Center"
+                                   TextWrapping="Wrap"/>
+
+
+                        <TextBlock Grid.Column="1" 
+                                   Grid.Row="1"
+                                   Margin="0, 15, 0, 0"
+                                   Text="Введите логин"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"/>
+                        <TextBox Name="LoginEnter_textBox"
+                                 Text="{Binding LoginBoxInput}"
+                                 Grid.Column="1" 
+                                 Grid.Row="1" 
+                                 Margin="5,35, 5, 0"
+                                 Padding="5,2,0,0"
+                                 BorderBrush="#FFFFD301"
+                                 BorderThickness="2"/>
+
+                        <TextBlock Grid.Column="1" 
+                                   Grid.Row="2" 
+                                   Margin="0, 15, 0, 0"
+                                   Text="Введите пароль"           
+                                   TextWrapping="Wrap"           
+                                   TextAlignment="Center"/>
+                        <TextBox Name="PasswordEnter_textBox"
+                                 Text="{Binding PasswordBoxInput}"
+                                 Grid.Column="1" 
+                                 Grid.Row="2" 
+                                 Margin="5, 35, 5, 0"
+                                 Padding="5,2,0,0"
+                                 BorderBrush="#FFFFD301"
+                                 BorderThickness="2"/>
+
+
+                        <Button Grid.Column="1"
+                                Grid.Row="3"
+                                Margin="5,20,5,0"
+                                Content="Зарегистрироваться"
+                                Background="#FFFFD301"
+                                Click="ShowRegistrationWindow_Click"                                        
+                                VerticalAlignment="Top"
+                                Height="20"/>
+
+
+                        <Grid Grid.Column="1"
+                                   Grid.Row="4">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Margin="5,10,5,5" 
+                                    Height="25"
+                                    Content="Назад" 
+                                    Background="#FFFFD301"
+                                    Click="CloseAutorizationWindow_Click"
+                                    Grid.Column="0"/>
+
+                            <Button Margin="5,10,5,5" 
+                                    Height="25"
+                                    Content="Войти"  
+                                    Background="#FFFFD301"
+                                    Click="SetCurrentUser_Click"
+                                    Command="{Binding ApplyLoginDataCommand}"
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="3"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Grid x:Name="RegistrationWindow" Visibility="Collapsed">
+                <Grid Background="#020202" Opacity="0.5"/>
+                <Border MinWidth="250"
+                            Background="White"
+                            BorderBrush="Black"
+                            CornerRadius="8"
+                            BorderThickness="1"  
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" 
+                            Height="250" 
+                            Width="200">
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="20"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="40"/>
+
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Column="1" 
+                                   Grid.Row="0"
+                                   Margin="3"
+                                   FontSize="18"
+                                   Text="Создание аккаунта"
+                                   HorizontalAlignment="Center"
+                                   TextWrapping="Wrap"/>
+
+
+                        <TextBlock Grid.Column="1" 
+                                   Grid.Row="1"
+                                   Margin="0, 0, 0, 0"
+                                   Text="Введите логин"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"/>
+                        <TextBox Name="LoginCreation_textBox"
+                                 Text="{Binding LoginCreationBoxInput}"
+                                 Grid.Column="1" 
+                                 Grid.Row="1" 
+                                 Margin="5,18,5,18"
+                                 Padding="5,2,0,0"
+                                 BorderBrush="#FFFFD301"
+                                 BorderThickness="2"/>
+
+                        <TextBlock Grid.Column="1" 
+                                   Grid.Row="2" 
+                                   Margin="0, 0, 0, 0"
+                                   Text="Введите пароль"           
+                                   TextWrapping="Wrap"           
+                                   TextAlignment="Center"/>
+                        <TextBox Name="PasswordCreation_textBox"
+                                 Text="{Binding PasswordCreationBoxInput}"
+                                 Grid.Column="1" 
+                                 Grid.Row="2" 
+                                 Margin="5,18,5,18"
+                                 Padding="5,2,0,0"
+                                 BorderBrush="#FFFFD301"
+                                 BorderThickness="2"/>
+
+                        <TextBlock Grid.Column="1" 
+                                   Grid.Row="3" 
+                                   Margin="0, 0, 0, 0"
+                                   Text="Введите пароль повторно"           
+                                   TextWrapping="Wrap"           
+                                   TextAlignment="Center"/>
+                        <TextBox Name="PasswordCreationConfirm_textBox"
+                                 Text="{Binding PasswordConfirmBoxInput}"
+                                 Grid.Column="1" 
+                                 Grid.Row="3" 
+                                 Margin="5,18,5,18"
+                                 Padding="5,2,0,0"
+                                 BorderBrush="#FFFFD301"
+                                 BorderThickness="2"/>
+
+                        <Grid Grid.Column="1"
+                                  Grid.Row="4">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Margin="5,0,5,10" 
+                                    Height="25"
+                                    Content="Назад" 
+                                    Background="#FFFFD301"
+                                    Click="ReturnToAutorizationWindow_Click"
+                                    Grid.Column="0"/>
+
+                            <Button Margin="5,0,5,10" 
+                                    Height="25"
+                                    Content="Создать"  
+                                    Background="#FFFFD301"
+                                    Click="CreateAccount_Click"
+                                    Command="{Binding CreateAccountCommand}"
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="3"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+
+        </Grid>
+    </ScrollViewer>
+</UserControl>
