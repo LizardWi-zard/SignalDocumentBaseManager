@@ -432,9 +432,17 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
             DateBeforeFilter = DateTime.MaxValue;
         }
 
-        private void GetExcel()
+        private int GetExcel()
         {
-            Workbook excelFile = new Workbook("../../../Files/excel.xlsx");
+            var path = GetPath();
+
+            if (path == null)
+            {
+                return -1;    
+            }
+
+            Workbook excelFile = new Workbook(path);
+
             WorksheetCollection excelSheets = excelFile.Worksheets;
 
             for (int sheetIndex = 0; sheetIndex < excelSheets.Count; sheetIndex++)
@@ -456,6 +464,31 @@ namespace SignalDocumentBaseManager.MVVM.ViewModel
                     document.AccessLevel = (int)currentSheet.Cells[i, 7].Value;
                     Documents.Add(document);
                 }
+            }
+
+            OutputCollection = Documents;
+
+            return 1;
+        }
+
+        private string GetPath()
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+
+            dialog.FileName = "Document";
+            dialog.DefaultExt = ".xlsx";
+            dialog.Filter = "Excel documents (.xlsx)|*.xlsx";
+
+            bool? result = dialog.ShowDialog();
+
+            if (result == true)
+            {
+                return dialog.FileName;
+            }
+            else
+            {
+                MessageBox.Show("Документ не выбран");
+                return null; 
             }
         }
     }
